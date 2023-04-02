@@ -1,0 +1,127 @@
+﻿# 1 Ders (Giriş)
+
+# 2 Ders (Başlamadan Önce Bilinmesi Gerekenler)
+-> 50 derste MVC
+-> 50 derste Tatil Projesi
+-> MVC Proje Kampı
+
+# 3 Ders (Yeni Proje Oluşturma)
+CoreDemo adlı Asp.Net 5.0 MVC projesini oluşturuyoruz.
+Ufak tefek default olarak gelen MVC ile tanıtım yapıldı.
+
+# 4 Ders (View Ve Layout)
+Bu derste HomeController'da ve bu controller'a bağlı bir View'de sistami daha iyi anlayabilmemiz için bir kaç kod yazdık.
+
+# 5 Ders (Katmanlı Mimariye Bakış Ve N Tier Architecture)
+*** Katmanlı Mimari ***
+- Kod tekrarını önleme ("DRY" Don't Repeat Yourself)
+- Projeye olan hakimiyet artar.
+- Kod okunaklığı artar.
+- Clean Code yapısı sağlanır.
+- Hata yönetimi kolaylaşır.
+
+*** N Tier Architecture ***
+-> Entitiy Layer
+	* Tablo ve sütunları oluşturduğumuz katmandır.
+
+-> DataAccess Layer
+	* CRUD operasyonlarının temelini oluşturcak yapıyı kullanıcaz.
+	* CRUD (CREAT-READ-UPDATE-DELETE)
+-> Business Layer
+	* Validasyonların yapıldıığı katmandır.
+-> Presentation Layer
+	* Sunum (UI) oluşturulduğu katmandır.
+-> Core Layer
+-> API
+
+# 6 Ders (Katmanların Oluşturulması)
+Solition üstüne sağ tık Add New Project deyip Class Library seçiyoruz ve sırayla şu katmanları dahil ediyoruz.
+-> EntityLayer
+-> DataAccessLayer
+-> BusinessLayer
+-> CoreLayer
+
+# 7 Ders (Entitylerin Oluşturulması Category - Blog)
+EntityLayer içine new folder Concrete ve içine class;
+-> Category (İçine propertyleri tanımlıyoruz.)
+-> Blog (İçine propertyleri tanımlıyoruz.)
+
+# 8 Ders (Entitylerin Oluşturulması Writer - Comment - About - Contact)
+Entity/Concrete içine;
+-> Writer (İçine propertyleri tanımlıyoruz.)
+-> Comment (İçine propertyleri tanımlıyoruz.)
+-> Contact (İçine propertyleri tanımlıyoruz.)
+-> About (İçine propertyleri tanımlıyoruz.)
+
+# 9 Ders (Entity Framework Core Paketleri)
+İlk olarak tüm entitylere [Key] ettiribütünü yazdık. Daha sonra DataAccessLayer içine;
+-> Microsoft.EntityFrameworkCore (5.0.9)
+-> Microsoft.EntityFrameworkCore.Design (5.0.9)
+-> Microsoft.EntityFrameworkCore.SqlServer (5.0.9)
+-> Microsoft.EntityFrameworkCore.Tools (5.0.9)
+paketlerini yüklüyoruz.
+
+Ardında bu katmana Abstract, Concrete ve Repositories klasörünü ekliyoruz. Ardından Concrete içine Context classını ekliyoruz.
+
+# 10 Ders (Connection String Ve Context Sınıfı)
+Bu derste açtığımız Context sınıfının içine Database'miz olacak CoreBlogDB adlı database oluşturmak için kodlarımızı yazdık.
+
+# 11 Ders (Referansların Tanımlanması Ve Context Dbset Propertyleri)
+Referans verme işlemi için(Katmana sağ tık Add - Project Referance); 
+EntityLayer --> Referans tanımlanmayacak.
+DataAccessLayer --> EntityLayer
+BusinessLayer --> EntityLayer + DataAccessLayer
+PresentationLayer --> EntityLayer + DataAccessLayer + BusinessLayer
+
+Referans verme işlemi ardından Context içine tablolarımı Dbset ile tanımladık.
+
+# 12 Ders (Migration İşlemleri)
+Migration işlemi yapabilmek için öncelikle PresentationLayer'a 
+-> Microsoft.EntityFrameworkCore (5.0.9)
+-> Microsoft.EntityFrameworkCore.Design (5.0.9)
+-> Microsoft.EntityFrameworkCore.SqlServer (5.0.9)
+-> Microsoft.EntityFrameworkCore.Tools (5.0.9)
+paketlerini yüklüyoruz.
+
+Ardından Package Manager Console'da add-migration ve update-database yaparak ilk migration'unumuzu oluşturuyoruz.
+
+# 13 Ders (İlişkilerin Eklenmesi Add Migration İşlemleri)
+Bu derste ilk olarak Blog ve Category tablolarını birbirleri ile ilşkilendirdik. Ardından Comment ve Blog arasındaki ilişkiyi oluşturduk.
+
+# 14 Ders (Interfacelerin Tanımlanması)
+- Her bir CRUD operasyonuna ait metot tanımlanacak.
+- Metotların imzası olarak interfaceler kullanılacak.
+- Abstract üzerinde soyut ifade olarak interfaceleri tanımlar.
+- Concrete üzerinde somut ifade olarak bu interfaceler içinde yer alan metotların içini doldur.
+
+Generic -> Bütününe uygulanacak.
+Ekleme-Silme-Güncelleme -> Void
+
+Bu derste DataAccesLayer içindeki Abstract klasörü içine IBlogDal ve ICategoryDal interfacelerini ekledik.
+
+# 15 Ders (Repositorylerin Yazılması)
+Bu derste DataAccesLayer içindeki Repositories içine CategoryRepository ve BlogRepository classlarını ekledik.
+
+# 16 Ders (Generic Repository)
+Bu derste ilk olarak DataAccesLayer içindeki Abstract klasörü içine new interface IGenericDal ekliyoruz ve ardından Repositories klasörü içine GenericRepository classını ekleyip dolduruyoruz.
+
+# 17 Ders (Business Katmanı Service ve Managerların Yazılması)
+BusinessLayer içine Abstract, Concrete ve ValidationRules klasörlerini ekledik ve ardından Abstact klasörü içine new interface ICategoryService ekliyoruz. Daha sonra Concrete içine CategorManager classını ekliyoruz ve implemente ediyoruz. Bu oluşum DRY kod ama öğrenme açısından böyle başladık düzelticez.
+
+# 18 Ders (Business Katmanı Hatalı Validasyonlar)
+Bu derste bir takım konu anlatımları dışında DataAccessLayer içine new folder EntityFramework ekliyoruz.
+
+# 19 Ders (Entity Framework Repository)
+Bu derste öncelikler DataAccessLayer içindeki Abstract taki interface'leri IGenericDal'dan miras aldırdık. Devamında
+IAboutDal, ICommentDal, IContactDal ve IWriterDal interfaceleri oluşturup miras aldırdık.
+Daha sonra EntityFramework klasörü içine new class 
+-> EfAboutRepository
+-> EfBlogRepository
+-> EfCategoryRepository
+-> EfCommentRepository
+-> EfContactRepository
+-> EfWriterRepository
+ekliyoruz ve gerekli düzenlemeleri yapıyoruz.
+
+# 20 Ders (Category Manager Sınıfında Revizeler Sertifika Görev 1)
+Bu derste ilk olarak CategoryManager'ın içini dolduruyoruz. Ardından 
