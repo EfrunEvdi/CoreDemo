@@ -115,7 +115,10 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("BlogID")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CommentContent")
+                    b.Property<string>("CommentContent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CommentDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("CommentStatus")
@@ -172,6 +175,9 @@ namespace DataAccessLayer.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("WriterAbout")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WriterConfirmPassword")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("WriterImage")

@@ -124,4 +124,162 @@ Daha sonra EntityFramework klasörü içine new class
 ekliyoruz ve gerekli düzenlemeleri yapıyoruz.
 
 # 20 Ders (Category Manager Sınıfında Revizeler Sertifika Görev 1)
-Bu derste ilk olarak CategoryManager'ın içini dolduruyoruz. Ardından 
+Bu derste ilk olarak CategoryManager'ın içini dolduruyoruz. Ardından Presentation katmanına CategoryController ekliyoruz ve sqlde Categories tablosuna bir kaç veri girişi yapıyoruz.
+
+# 21 Ders (Kategorilerin Listelenmesi)
+Bu derste CategoryManager'ı olması gerektiği hale getirdikten sonra CategoryController'da Index'in controllerını yazdıktan sonra View ekliyoruz Razor view olarak ve tablo yapısıyla kategorilerin geldiğini görüyoruz.
+
+# 22 Ders (Temanın Projeye Eklenmesi)
+21. derste indirdiğimiz temayı layoutlaştırmak için öncelikle _UserLayout adlı viewi Shared dosyasının içine açıyoruz. Ardından çalışıyor mu diye BlogController'ı dahil ediyoruz projeye sorunsuz çalıştığınız görüyoruz.
+Ardından templateden aldığımız index ile _UserLayout'u ayarladık.
+
+# 23 Ders (Partial View Await Async)
+Bu derste _UserLayout'u partiallara ayrıdık. Hocadan farklı bir yol izledim. İlk olarak Views klasörü içine UserLayoutPartial adlı bir klasör içine de ;
+-> HeadPartial
+-> LogoPartial
+-> TopbarPartial
+-> SocialMediaPartial
+-> NavbarPartial
+-> FooterPartial
+viewlerini Partial olarak açıp _UserLayout'ta
+
+@await Html.PartialAsync("/Views/UserLayoutPartial/HeadPartial.cshtml")
+
+kodu ile partialları çağırdık.
+
+# 24 Ders (Blogların Listelenmesi)
+Bu derste ilk olarak BusinessLayerda Abstract içine IBlogService ardından Concrete içine BlogManager'ı dahil edip ardından BlogController'a ait index'e templateden aldığımız blog kısmını ekleyip foreach döngüsüne sokuyoruz. Bir kaç blog ekledikten sonra blogların geldiğini gördük.
+
+# 25 Ders (Include Metodu Ve Eager Load)
+Bloglarda CategoryName'i getirebilmek için IBlodDal'da
+
+List<Blog> GetListWithCategory();
+
+ardından EfBlogRepository'de
+
+public List<Blog> GetListWithCategory()
+        {
+            using (var c = new Context())
+            {
+                return c.Blogs.Include(x => x.Category).ToList();
+            }
+        }
+
+kodlarını yazıp Repositories'te oluşturulan GenericRepository hariç diğer tüm classlari sildik.
+
+Daha sonra BusinessLayer/Abstract içindeki IBlogService'e
+
+List<Blog> GetBlogListWithCategory();
+
+ve Concrete içindeki BlogManager'de
+
+public List<Blog> GetBlogListWithCategory()
+        {
+            return _blogDal.GetListWithCategory();
+        }
+
+kodlarını ekledik.
+
+# 26 Ders (Read More Ve Tarih Formatı)
+Kısa Format Tarih : @(((DateTime)item.xxx).ToString("dd-MMM-yyyy"))
+Kısa Format Metin : @item.xxx.Substring(0,item.xxx.Substring(0,130).LastIndexOf(" "))...
+Blogların listelendiği kısımda bu kodları kullanarak görsel anlamda güzelleştirme yaptık.
+
+# 27 Ders (Blog Detayları)
+BlogController'a BlogDetails Controllerını yazıp index ekledik be single.htmlden istediğimiz kısmı alıp düzenledik.
+Daha sonra şartı sorgular için IGenericDal'a
+
+List<T> GetListAll(Expression<Func<T, bool>> filter);
+
+yazıyoruz ve ardından GenericRepository içine
+
+public List<T> GetListAll(Expression<Func<T, bool>> filter)
+        {
+            using var c = new Context();
+            return c.Set<T>().Where(filter).ToList();
+        }
+
+ve Business katmanında Concrete içindeki BlogManager'a
+
+public List<Blog> GetBlogByID(int id)
+        {
+            return _blogDal.GetListAll(x => x.BlogID == id);
+        }
+
+kodunu yazdık ve dersi bitirdik.
+
+# 28 Ders (Blog Devamını Oku Sayfası)
+Controller'ın adını BlogReadAll olarak değiştiriyoruz ve işlemleri bu değişikliğe göre uyarlıyoruz. Ardından ID'ye göre bilgileri çekiyoruz ve bu çekimi görsel olarak düzeltiyoruz.
+Daha sonra CommentController açıyoruz ve içine oluşturduğum 2 parça controller'a ait partial view açıp bu kodları kesip partialviewlere yapıştırıp düzenliyoruz.
+
+# 29 Ders (Yorumlara Ait Metotların Yazılması)
+Business katmanına ICommentService ve CommentManager ı projeye dahil edip CommentController'da yazıp partial'da verileri çekiyoruz. Hata altın partialda IEnumarable kullandığımız için onu bir sonraki derste düzelteceğiz.
+
+# 30 Ders (View Component)
+Bu derste ilk olarak ViewComponents adlı klasörü UI katmanına ekliyoruz ve içine CommentList classını ekleyip ardından Shared içine Components klasörünü imine CommentList klasörünü içinede Default viewini partial olarak ekliyoruz. Ardından statik olarak gelmesi için model oluşturduk ve IEnumarable ile geldiğini gördük.
+
+# 31 Ders (Bloglara Ait Yorumların Listelenmesi)
+Bu derste ilk olarak ViewComponents içine Comment adlı klasörü içine CommentListByBlog adlı classı ekledik ardından Components içine CommentListByBlog adlı klasörü içinede Default adlı viewi ekleyip daha önce yazdığımız PartialCommentList'deki kodları kopyalayıp düzenledik ve sorunsuz bir şekilde geldiğini gördük ve dersi bitirdik.
+
+# 32 Ders (View Component İle Parametre Kullanımı)
+Bu derste ilk olarak idye göre yorum getirme işlemi için
+
+public IViewComponentResult Invoke(int id)
+        {
+            var values = cm.GetList(id);
+            return View(values);
+        }
+
+olarak id kısmını güncelledik devamında id nin gelmediğini gördük. Ardından
+
+@await Component.InvokeAsync("CommentListByBlog",new {id= ViewBag.ID})
+
+ile ID gönderdik ve oldu. Eğer yorum yoksa yorum yapın ödevinide tamamladım.
+Ardından BlogReadAll'da Component yapısıyla Kategorileri getirdik. Ardından bir takım görsel iyileştirmeler yaptık.
+
+# 33 Ders (Httpget Ve Httppost Attributeleri Ve Register İşlemi)
+Bu derste register işlemi için LoginController açtık ve içine SingUp cantrollerını yazıp view ekledik ardından templateden istediğimiz yeri kopyalayıp bu view'e yapıştırdık. Devamından Business katmanına IWriterService ve WriterManager'ı dahil edip controller tarafında
+
+[HttpGet]
+        public IActionResult SingUp()
+        {
+            return View();
+        }
+
+[HttpPost]
+        public IActionResult SingUp(Writer writer)
+        {
+            return View();
+        }
+
+kodlarını yazıp dersi bitirdik.
+
+# 34 Ders (Yazar Kaydı Ve Sweet Alert Kullanımı)
+Bu derste ilk olarak yazar kaydı için
+
+[HttpPost]
+        public IActionResult SingUp(Writer writer)
+        {
+            writer.WriterStatus = true;
+            writer.WriterAbout = "Deneme";
+            if (writer.WriterPassword == writer.WriterConfirmPassword)
+            {
+                wm.WriterAdd(writer);
+                return RedirectToAction("Index", "Blog");
+            }
+            return View();
+        }
+
+controller'ını yazıyoruz ve bu şekilde kaydın gerçekleştiğini gördük. Ardından tüm şartları okudum, kabul ediyorum kısmı için sweet alert kullandık.
+
+# 35 Ders (Fluent Validation Core)
+Busines katmanı ve Uı katmanına
+-> FluentValidation (10.3.3)
+-> FluentValidation.AspNetCore (10.3.3)
+paketlerini yüklüyoruz.
+
+BusinessLayer'daki ValidationRules klasörü içine new class WriterValidator açıp kurallarımızı yazıyoruz. Ardından bu kuralların geçerli olması için önce LoginController'da ardından SignUp'da gerekli kodları yazıyoruz. Ardından dersi bitirdik.
+
+# 36 Ders ()
+
+

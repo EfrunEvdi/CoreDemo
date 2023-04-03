@@ -1,0 +1,37 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="zxx">
+
+@await Html.PartialAsync("/Views/UserLayoutPartial/HeadPartial.cshtml")
+
+<body>
+    <!--Header-->
+    <header>
+        <div class="top-bar_sub_w3layouts container-fluid">
+            <div class="row">
+                @await Html.PartialAsync("/Views/UserLayoutPartial/LogoPartial.cshtml")
+
+                @await Html.PartialAsync("/Views/UserLayoutPartial/TopbarPartial.cshtml")
+
+                @await Html.PartialAsync("/Views/UserLayoutPartial/SocialMediaPartial.cshtml")
+            </div>
+        </div>
+        @await Html.PartialAsync("/Views/UserLayoutPartial/NavbarPartial.cshtml")
+    </header>
+
+    <!--//header-->
+    @RenderBody()
+
+    <!--footer-->
+    @await Html.PartialAsync("/Views/UserLayoutPartial/FooterPartial.cshtml")
+    <!-- //footer -->
+    <!---->
+    <!-- js -->
+    @await Html.PartialAsync("/Views/UserLayoutPartial/ScriptPartial.cshtml")
+    <!-- //js -->
+</body>
+
+</html>
+

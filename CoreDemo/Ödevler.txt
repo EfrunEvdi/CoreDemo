@@ -4,5 +4,73 @@
 DRY nedir?
 DRY (Don’t Repeat Yourself) prensibine göre kod içindeki her parçacığın kendine özelleştirilmiş bir yapısı, görevi olmalıdır. Aksi halde bir değişiklik yapılması gerektiğinde o parçadan etkilenen diğer parçalarda da değişiklik yapılması gerekir ki bu da çoğu zaman karmaşıklığa sebep olur. Kod tekrarından kaçınılmalı, tekrarlamalar soyutlama yolu ile aşılmalıdır.
 
-1. Görev
-Projeyi GitHub'a yüklemek.
+20. Video: Projeyi GitHuba yüklemek.
+Projeyi GitHub'a yükledim.
+
+--EfCategoryRepository'i kullanmamızdaki dezavantaj Entity Framework'e bağımlı olmamız. İlerde başka bir teknoloji geldiğinde projeyi ona geçirmek için neredeyse bütün katmanlardaki kodları tek tek değiştirmemiz gerekir ama interface kullanarak bu bağımlılığı yok eder ve istersek ileride daha farklı teknolojilere geçebiliriz. Avantaj olaraksa kısa vadede daha az kod yazıp daha kısa sürede projeyi bitirebiliriz.
+
+Eager Loading: nesneyi ihtiyaç anından hemen önce oluşturur ve bekletir. Linq sorgusu çalıştırıldığında verilerin tamamını yükler ve hafızaya alır. Daha ucuz maliyetlidir.
+Lazy Loading : Bu yöntemde veriler sorguya bağlı olarak çekilir ancak veri setinin içindeki tüm dataları yüklemek yerine verilerin çağrıldıkça otomatik yüklenmesi söz konusudur. Daha pahalı işlemdir.
+
+30. Video: View Component ile Partial view arasındaki fark araştırılacak.(Videonun yorumlarında cevaplar var)
+Kullanım amacı olarak birebir aynı olan bu iki yapının birbirinden ayrılmasını sağlayan özelliği View Component tarafında server tarafa daha az yük bindirilmesinin amaçlanmış olmasıdır. Partial View içerisinde tanımlanan bir method local function olarak kullanılır.Bu methodların dışarıdan bire bire tetiklenmesi ve kullanılması mümkün değildir.
+Örnek:“Customer listemiz var ve her eklenen datadan sonra listenin anlık olarak güncellenmesini ve bu güncelleme sırasında zaman kaybı olmadan yapılmasını istiyoruz”.
+
+Çözüm:“Bahsettiğim mevcut durumun üstesinden gelmek için CustomerController içerisinde PartialViewResult dönen bir method yazılır. Method ajax ile tetiklenir ve dönen Partial append edilir.Bunun gibi bir çok durumda benzer süreçler işlemektedir.
+
+Buda uygulamanın Controller ile çok fazla haberleşmesini ve bu neticede performans kayıplarını beraberinde getirmektedir. View Component yapısının tamda bu noktada Partial View yapısındaki bu dezavantajı ortadan kaldırmaktadır.
+
+Asp.Net Core ile birlikte gelen View Componentleri WebForms ile kullanılan UserControl veya MVC ile kullandığımız Partial View yapılarına benzetebiliriz. Web uygulamalarımızda birden fazla alanda kullanmak istediğimiz viewlerimiz için ViewComponent’i tercih edebiliriz.
+
+MVC’nin önceki sürümlerinde birden fazla alanda kullanmak istediğimiz bileşenleri genellikle Partial View olarak tasarlar ve [ChildActionOnly] attribute ile birlikte tek başlarına çağrılmalarını engellerdik. Bu yapı bizim için büyük kolaylık sağlardı. Asp.Net Core ile birlikte [ChildActionOnly] attribute kullanımı kaldırılmış ve yeni ViewComponent yapısı geliştirilmiştir. ViewComponentler dışarıdan Http istek ile doğrudan ulaşılamazlar.
+
+32 Video: Eğer Blogta Hiç Yorum yoksa ilk yorumu siz yazın diye yazdırılacak.
+
+33. Video: Kayıt Olurken Parolanın 2 kez girilip onaylanması.
+
+34. Video: Kayıt olma sayfasında değerlerini view modelde tutucağımız bir şehir seçimi
+
+Controller:
+public IActionResult Index()
+        {
+            var model = new ViewModel();
+            model.Sehirler = new List<SelectListItem>();
+            model.Sehirler.Add(new SelectListItem() { Text = "İstanbul", Value = "1", Selected = false });
+            model.Sehirler.Add(new SelectListItem() { Text = "Ankara", Value = "2", Selected = false });
+            model.Sehirler.Add(new SelectListItem() { Text = "İzmir", Value = "3", Selected = false });
+            model.Sehirler.Add(new SelectListItem() { Text = "Diğer", Value = "4", Selected = false });
+            return View(model);
+        }
+
+View Model: 
+public class ViewModel
+    {
+        public string Sehir { get; set; }
+        public IList<SelectListItem> Sehirler { get; set; }
+
+    }
+
+Index View: 
+@using (Html.BeginForm("Index", "RegisterController", FormMethod.Post))
+                        {
+                            <div class="form-group col-md-6">
+                                <label for="validationCity mb-2">Şehir Seçiniz</label>
+                                <br />
+                                <label>
+                                    @if (Model != null)
+                                    {
+                                        @Html.DropDownListFor(m => m.Sehir, Model.Sehirler);
+                                    }
+                                </label>
+
+                            </div>
+                        }
+
+
+35. Video: Fluent Validationda Kullanıcının parolası en az bir büyük harf, en az bir küçük harf ve en az 1 sayı olacak.
+RuleFor(x => x.WriterPassword).NotEmpty().WithMessage("Şifre Boş Geçilemez")
+                .MinimumLength(8).WithMessage("Şifre 8 karakterden küçük olamaz.")
+                .MaximumLength(16).WithMessage("Şifre 16 karakterden büyük olamaz.")
+                .Matches(@"[A-Z]+").WithMessage("Şifrede en az bir büyük harf olmalıdır.")
+                .Matches(@"[a-z]+").WithMessage("Şifrede en az bir küçük harf olmalıdır.")
+                .Matches(@"[0-9]+").WithMessage("Şifrede en az bir rakam olmalıdır");
