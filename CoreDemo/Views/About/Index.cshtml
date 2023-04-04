@@ -1,0 +1,80 @@
+﻿@using EntityLayer.Concrete
+@model List<About>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<!--/banner-->
+<div class="banner-inner">
+</div>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="/Blog/Index/">Ana Sayfa</a>
+    </li>
+    <li class="breadcrumb-item active">Hakkımızda</li>
+</ol>
+<!--//banner-->
+<!--/main-->
+<section class="main-content-w3layouts-agileits">
+    <div class="container">
+        <h3 class="tittle">Hakkımızda</h3>
+        <div class="row inner-sec">
+            <!--left-->
+            <div class="col-lg-8 left-blog-info-w3layouts-agileits text-left">
+                <div class="blog-grid-top">
+                    @foreach (var item in Model)
+                    {
+                        <div class="blog_info_left_grid">
+                            <a href="single.html">
+                                <img src="@item.AboutImage1" class="img-fluid" alt="">
+                            </a>
+                        </div>
+                        <h3>
+                            "WeBlog: Bilgi, İlham ve Eğlence Platformu"
+                        </h3>
+                        <p>
+                            @item.AboutDetails1
+                        </p>
+                        <div class="blog_info_left_grid">
+                            <a href="single.html">
+                                <img src="@item.AboutImage2" class="img-fluid" alt="">
+                            </a>
+                        </div>
+                        <h3>
+                            "WeBlog: Gündemdeki Konuları Ele Alan Yeni Nesil Blog"
+                        </h3>
+                        <p>
+                            @item.AboutDetails2
+                        </p>
+                    }
+                </div>
+            </div>
+            <!--//left-->
+            <!--right-->
+            <aside class="col-lg-4 agileits-w3ls-right-blog-con text-right">
+                <div class="right-blog-info text-left">
+
+                    @await Html.PartialAsync("~/Views/NewsLetter/SubscribeMail.cshtml")
+
+                    @await Html.PartialAsync("~/Views/About/SocialMediaAbout.cshtml")
+
+                    @await Component.InvokeAsync("WriterLastBlog")
+
+                    <div class="tech-btm">
+                        <div class="contact-map inner-sec img-fluid">
+                            <h4>Lokasyonumuz</h4>
+                            @foreach (var item in Model)
+                            {
+                                <iframe src="@item.AboutMapLocation" height="300" width="100%" style="border:0;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            <!--//right-->
+        </div>
+    </div>
+</section>
+<!--//main-->

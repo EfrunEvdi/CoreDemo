@@ -18,7 +18,7 @@ namespace BusinessLayer.ValidationRules
             //RuleFor(x => x.WriterPassword).NotEmpty().WithMessage("Şifre kısmı boş geçilemez.");
             RuleFor(x => x.WriterConfirmPassword).NotEmpty().WithMessage("Şifre tekrar kısmı boş geçilemez.");
 
-            RuleFor(x => x.WriterPassword).NotEmpty().WithMessage("Şifre Boş Geçilemez")
+            RuleFor(x => x.WriterPassword).NotEmpty().WithMessage("Şifre kısmı boş geçilemez.")
                             .MinimumLength(6).WithMessage("Şifreniz en az 6 karakter oluşmalıdır.")
                             .MaximumLength(8).WithMessage("Şifreniz en fazla 8 karakterden oluşmalıdır.")
                             .Matches(@"[A-Z]+").WithMessage("Şifrenizde en az bir büyük harf olmalıdır.")

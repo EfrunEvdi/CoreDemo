@@ -280,6 +280,76 @@ paketlerini yüklüyoruz.
 
 BusinessLayer'daki ValidationRules klasörü içine new class WriterValidator açıp kurallarımızı yazıyoruz. Ardından bu kuralların geçerli olması için önce LoginController'da ardından SignUp'da gerekli kodları yazıyoruz. Ardından dersi bitirdik.
 
-# 36 Ders ()
+# 36 Ders (Login Panelinin Hazırlanması, View Sayfasında Class Atamaları)
+Bu derste ilk olarak Validation rule yazılarını kırmızı olarak getirdik. Ardında LoginControllerda signin için bir controller yazarak SignIn sayfasını yaptık ve türkçeleştirdik.
+
+# 37 Ders (Yazarın Diğer Yazıları Ve Yazar Blog İlişkisi)
+Bu derste ilk olarak yazara göre blog getirebilmek için blog ile writer tablolarını bağlıyoruz.
+Ardından BlogManager'da
+
+public List<Blog> GetBlogListByWriter(int id)
+        {
+            return _blogDal.GetListAll(x => x.WriterID == id);
+        }
+
+kodunu yazıyoruz.
+Ardından yazarın son blogları için WriterLastBlog adlı komponenti oluşturup verileri düzeltip dersi bitirdik.
+
+# 38 Ders (Mail Bülteni)
+Bu derste ilk olarak mail bülteni için NewsLetter clasını EntityLayer'a ekliyoruz. Buna bağlı olarak DataAccessLayerda ve BusinessLayer'da clat ve interfacelerimizi ekleyip oluşturduğumuz NewsLetterController'ına partial controller ekleyip View açıyoruz ardından bu view'e gerekli kısmı kesip kodunu yazıp çalıştığını görüyoruz ve dersi bitiriyoruz.
+
+# 39 Ders (Mail Bültenine Abone Olma Ve Bloglara Yorum Yapma)
+Bu derste ilk olarak mail adresinin sql adresine kayıt olması için controller ve view tarafında gerekli kodları yazıyoruz. 
+Ardından daha önce oluşturmuş olduğumuz CommentController da
+
+[HttpPost]
+        public IActionResult PartialAddComment(Comment comment)
+        {
+            comment.CommentDate = Convert.ToDateTime(DateTime.Now.ToShortDateString());
+            comment.CommentStatus = true;
+
+            cm.CommentAdd(comment);
+
+            return RedirectToAction("BlogReadAll", "Blog", new { id = comment.BlogID });
+        }
+
+kısmını güncelleyerek
+
+@await Html.PartialAsync("~/Views/Comment/PartialAddComment.cshtml",new { id = ViewBag.ID }) 
+
+ile ID gönderip
+
+<div class="comment-top">
+    <h4>Bir Yorum Bırakın.</h4>
+    <div class="comment-bottom">
+        <form method="post" asp-action="PartialAddComment" asp-controller="Comment">
+            <input type="hidden" name="BlogID" value="@ViewBag.ID" />
+            <input class="form-control" type="text" name="CommentUserName" placeholder="İsim Soyisim" required="">
+            <input class="form-control" type="email" name="Email" placeholder="E-Posta" required="">
+
+            <input class="form-control" type="text" name="CommentTitle" placeholder="Konu" required="">
+
+            <textarea class="form-control" name="CommentContent" placeholder="Yorumunuz..." required=""></textarea>
+
+            <button type="submit" class="btn btn-primary submit">Gönder</button>
+        </form>
+    </div>
+</div>
+
+ile yorum yaptırma kısmını tamamladık.
+
+# 40 Ders (Status Code Ve 404 Sayfası)
+
+//app.UseStatusCodePages();
+app.UseStatusCodePagesWithReExecute("/ErrorPage/Error1", "?code={0}");
+
+kodunu ekleyerek ErrorPageController'ı açıp istediğimiz bir tamplete View yazıp dersi bitirdik.
+
+# 41 Ders (About İşlemleri)
+Bu derste ilk olarak AboutController açıp BusinessKatmanına IAboutService ve AboutManagerı dahil edip devamında controllera index ekledik. Daha sonra bu indexe templateden istediğimiz kısmı kopyaladık ve sqle veri girdikten sonra verileri çektik.
+
+# 42 Ders (Contact Sayfası)
+
+
 
 

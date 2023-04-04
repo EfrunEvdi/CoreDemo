@@ -43,5 +43,10 @@ namespace CoreDemo.Controllers
             }
             return View();
         }
+
+        public IActionResult SignIn()
+        {
+            return View();
+        }
     }
 }

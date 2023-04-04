@@ -1,13 +1,16 @@
 ﻿<div class="comment-top">
     <h4>Bir Yorum Bırakın.</h4>
     <div class="comment-bottom">
-        <form action="#" method="post">
-            <input class="form-control" type="text" name="Name" placeholder="İsim Soyisim" required="">
+        <form method="post" asp-action="PartialAddComment" asp-controller="Comment">
+            <input type="hidden" name="BlogID" value="@ViewBag.ID" />
+
+            <input class="form-control" type="text" name="CommentUserName" placeholder="İsim Soyisim" required="">
             <input class="form-control" type="email" name="Email" placeholder="E-Posta" required="">
 
-            <input class="form-control" type="text" name="Subject" placeholder="Konu" required="">
+            <input class="form-control" type="text" name="CommentTitle" placeholder="Konu" required="">
 
-            <textarea class="form-control" name="Message" placeholder="Yorumunuz..." required=""></textarea>
+            <textarea class="form-control" name="CommentContent" placeholder="Yorumunuz..." required=""></textarea>
+
             <button type="submit" class="btn btn-primary submit">Gönder</button>
         </form>
     </div>
