@@ -339,7 +339,6 @@ ile ID gönderip
 ile yorum yaptırma kısmını tamamladık.
 
 # 40 Ders (Status Code Ve 404 Sayfası)
-
 //app.UseStatusCodePages();
 app.UseStatusCodePagesWithReExecute("/ErrorPage/Error1", "?code={0}");
 
@@ -349,7 +348,138 @@ kodunu ekleyerek ErrorPageController'ı açıp istediğimiz bir tamplete View ya
 Bu derste ilk olarak AboutController açıp BusinessKatmanına IAboutService ve AboutManagerı dahil edip devamında controllera index ekledik. Daha sonra bu indexe templateden istediğimiz kısmı kopyaladık ve sqle veri girdikten sonra verileri çektik.
 
 # 42 Ders (Contact Sayfası)
+Contact sayfası için öncelikle ContactController'ı ardından IContactService ve ContactManager'ı busines katmanına dahil ediyoruz. Devamında Contact controller'da yazdığımız HttpGet ve HttpPost için View ekleyip Templateden gerekli kısmı kendimiz için alıp form kısmında name'leri tabloya uygun doldurum verilerin geldiğini görünce dersi bitriyoruz.
+
+# 43 Ders (Vitrinde Revizeler)
+Navbar linkleri verildi
+Topbar linkleri verildi
+Footer türkçeleştirmesi yapıldı.
+
+# 44 Ders (Authentication Ve Controller Seviyesinde Authorize)
+Authorize:Yetkilendirme alanları. Giriş yapmamış kişileri engelleme için kullanılan ettiribüttür. [Authorize] ile safyayı kitliyoruz.
+
+WriterController adlı bir controller açtık eğer bu Authorize adlı kodu sadece controllerın üstüne yazarsak o controller çalışmaz otantike olmadan. Ama namespace nin bir altına yazarsak hepsi kitlenir.
+
+# 45 Ders (Proje Seviyesinde Authorize Ve Startup.Cs Configure Service)
+
+Bu derste ilk olarak startup'ta
+
+services.AddMvc(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });
+
+kodu ile proje seviyesin Authorize yazmış olduk.
+Ardından bu giriş işleminin etkisin olması için istenilen controllera [AllowAnonymous] kodunu yazıyoruz.
+
+# 46 Ders (Session İle Oturum Yönetimi)
+Bu derste öncelikle SignIn safyasının httpget ve post kısım larını 
+
+[HttpGet]
+        public IActionResult SignIn()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult SignIn(Writer writer)
+        {
+            Context context = new Context();
+            var dataValue = context.Writers.FirstOrDefault(x => x.WriterMail == writer.WriterMail && x.WriterPassword == writer.WriterPassword);
+
+            if (dataValue != null)
+            {
+                HttpContext.Session.SetString("username", writer.WriterMail);
+                return RedirectToAction("Index", "Writer");
+            }
+
+            else
+            {
+                return View();
+            }
+        }
+
+olarak yazıp ardından startup'a
+
+services.AddSession();
+app.UseSession();
+
+kodlarını yazdık devamında giriş yaptık ama hata sayfası geldi.
+
+# 47 Ders (Authorize ile Return Login Url)
+startup'ta aşağıdaki kodlarla artık hata yerine Login sayfasına yönlendirecek.
+
+ app.UseAuthentication();
 
 
+ services.AddMvc();
+            services.AddAuthentication(
+                CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(x =>
+                {
+                    x.LoginPath = "/Login/SignIn/";
+                });
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie Settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+                options.LoginPath = "/Login/SignIn/";
+                options.SlidingExpiration = true;
+            });
+
+# 48 Ders (Login İşlemi)
+Bu derste startupta
+
+ app.UseAuthentication();
+
+kodunu yazdıktan sonra LoginController'ı
+
+ [HttpPost]
+        public async Task<IActionResult> SignIn(Writer writer)
+        {
+            Context context = new Context();
+            var datavalue = context.Writers.FirstOrDefault(x => x.WriterMail == writer.WriterMail && x.WriterPassword == writer.WriterPassword);
+
+            if (datavalue != null)
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name,writer.WriterMail)
+                };
+
+                var useridentity = new ClaimsIdentity(claims, "a");
+                ClaimsPrincipal principal = new ClaimsPrincipal(useridentity);
+                await HttpContext.SignInAsync(principal);
+                return RedirectToAction("Index", "Blog");
+            }
+
+            else
+            {
+                return View();
+            }
+        }
+
+bu şekilde güncelledik ve ardından otantike olduk artık her sayfaya gidebiliyoruz.
+Startupdta services.AddSession(); kodunu kaldırdık.
+
+# 49 Ders (Footer Last 3 Post)
+Bu derste öncelikle BusinessLayerDa BlogManager'a
+
+public List<Blog> GetLast3Blog()
+        {
+            return _blogDal.GetListAll().Take(3).ToList();
+        }
+
+kodunu yazıp ardından ViewComponents/Blog içine BlogLast3Post classını dahil edip component yapısını kuruyoruz ardından Component klasörüne partial viewi ekledikten sonra gerekli yeri kesip uzantısını veriyoruz. Daha sonra son 3 postun geldiğini görüyoruz bu şekilde.
+
+# 50 Ders (Yazar Paneli Tema Dosyası)
+Bu derste hocanın paylaşmış olduğu writer template'i indirdik ve WriterControllerDa test adlı kısmı yazdıktan sonra Shared klasöü içine _WriterLayout adlı viewi ekledik. Devamında Test adlı controllera view ekleyip layoutunu oluşturduğumuz writerlayout seçtik. Devamında templateden aldığımız kısmın kalıcı olmasını istediğimiz kısmını bu layoutta bırakıp diğer kısımları sildik ve dersi bitirdik.
+
+# 51 Ders (Yazar Navbar Düzenlemeleri)
 

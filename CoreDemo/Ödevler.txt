@@ -74,3 +74,13 @@ RuleFor(x => x.WriterPassword).NotEmpty().WithMessage("Şifre Boş Geçilemez")
                 .Matches(@"[A-Z]+").WithMessage("Şifrede en az bir büyük harf olmalıdır.")
                 .Matches(@"[a-z]+").WithMessage("Şifrede en az bir küçük harf olmalıdır.")
                 .Matches(@"[0-9]+").WithMessage("Şifrede en az bir rakam olmalıdır");
+
+39. Video Yorum ve Bülteni ekleme sorununun giderilmesi
+
+40. Video Github Repoları güncellendi
+
+48. Vide claim ile neden string bir ifade girilmelidir?
+Authentication="kimlik doğrulaması"
+Authorization="kimlik yetkilendirme"
+Claim=""kullanıcı hakkında bilgiler tutan yapılar diyebiliriz."
+Kısaca Claim anlatmamız gerekirse Örneğin:Youtobe'a giriş yaptık ve Youtobe bize izleyici rolü tanımladı,bu tanımlama ile beraber istediğmiz video'yu izleyebiliyoruz.Ama diyelim ki yaşımız 18'den küçük ve bazı korku gerilim videoları +18 sınır konulması gerekiyor,İşte burada yaş aralığını ölçebilmek için ilgili kullanıcıların yaş değerlerinin claim olarak atanması sağlanmalı ve claim bazlı bir yetkilendirme yapılmalıdır.
