@@ -39,7 +39,7 @@ namespace CoreDemo.Controllers
                 writer.WriterAbout = "Deneme";
                 if (writer.WriterPassword == writer.WriterConfirmPassword)
                 {
-                    wm.WriterAdd(writer);
+                    wm.TAdd(writer);
                     return RedirectToAction("Index", "Blog");
                 }
             }

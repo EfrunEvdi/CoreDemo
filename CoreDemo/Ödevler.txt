@@ -79,8 +79,12 @@ RuleFor(x => x.WriterPassword).NotEmpty().WithMessage("Şifre Boş Geçilemez")
 
 40. Video Github Repoları güncellendi
 
-48. Vide claim ile neden string bir ifade girilmelidir?
+48. Video: ClaimsIdentity'de 2. parametre neden verilmeli ? Araştırılacak.
 Authentication="kimlik doğrulaması"
 Authorization="kimlik yetkilendirme"
 Claim=""kullanıcı hakkında bilgiler tutan yapılar diyebiliriz."
 Kısaca Claim anlatmamız gerekirse Örneğin:Youtobe'a giriş yaptık ve Youtobe bize izleyici rolü tanımladı,bu tanımlama ile beraber istediğmiz video'yu izleyebiliyoruz.Ama diyelim ki yaşımız 18'den küçük ve bazı korku gerilim videoları +18 sınır konulması gerekiyor,İşte burada yaş aralığını ölçebilmek için ilgili kullanıcıların yaş değerlerinin claim olarak atanması sağlanmalı ve claim bazlı bir yetkilendirme yapılmalıdır.
+
+52. Video: Mesajların 24 saatlik dilim içinde gönderilmiş ise ne kadar süre önce gönderildiği yazdırılacak.(?)
+
+54. Video: Yazar panelinde Purple logosu yerine kendi blogunuzun logosunu koyun.

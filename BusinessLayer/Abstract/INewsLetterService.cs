@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Abstract
 {
-    public interface INewsLetterService
+    public interface INewsLetterService : IGenericService<NewsLetter>
     {
-        void NewsLetterAdd(NewsLetter newsLetter);
     }
 }
