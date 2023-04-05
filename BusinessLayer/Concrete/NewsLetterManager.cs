@@ -18,7 +18,7 @@ namespace BusinessLayer.Concrete
             _newsLetterDal = newsLetterDal;
         }
 
-        public NewsLetter GetById(int id)
+        public NewsLetter TGetById(int id)
         {
             return _newsLetterDal.GetByID(id);
         }

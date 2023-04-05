@@ -1,0 +1,61 @@
+﻿@model EntityLayer.Concrete.Blog
+
+@{
+    ViewData["Title"] = "BlogAdd";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Yeni Blog Ekleme Sayfası</h4>
+                <p></p>
+                <form method="post" class="forms-sample">
+
+                    <div class="form-group">
+                        <label>Blog Başlığı</label>
+                        <input type="text" asp-for="BlogTitle" class="form-control" placeholder="Blog başlığını giriniz.">
+                        @Html.ValidationMessageFor(x=>x.BlogTitle)
+                    </div>
+
+                    <div class="form-group">
+                        <label>Blog Görseli</label>
+                        <div class="input-group col-xs-12">
+                            <input type="text" class="form-control file-upload-info" asp-for="BlogImage" placeholder="Blog görselini seçiniz.">
+                            <span class="input-group-append">
+                                <button class="file-upload-browse btn btn-gradient-primary" type="button">Yükle</button>
+                            </span>
+                        </div>
+                        @Html.ValidationMessageFor(x=>x.BlogImage)
+                    </div>
+
+                    <div class="form-group">
+                        <label>Blog Ana Görseli</label>
+                        <div class="input-group col-xs-12">
+                            <input type="text" class="form-control file-upload-info" asp-for="BlogThumbnailImage" placeholder="Blog ana görselini seçiniz.">
+                            <span class="input-group-append">
+                                <button class="file-upload-browse btn btn-gradient-primary" type="button">Yükle</button>
+                            </span>
+                        </div>
+                        @Html.ValidationMessageFor(x=>x.BlogThumbnailImage)
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kategori</label>
+                        @Html.DropDownListFor(x=>x.CategoryID,(List<SelectListItem>)ViewBag.cv,new {@class="form-control"})
+                    </div>
+
+                    <div class="form-group">
+                        <label>Blog İçeriği</label>
+                        <textarea class="form-control" rows="4" asp-for="BlogContent"></textarea>
+                        @Html.ValidationMessageFor(x=>x.BlogContent)
+                    </div>
+                    <button type="submit" class="btn btn-gradient-primary mr-2">Bloğu Oluştur!</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -18,7 +18,7 @@ namespace BusinessLayer.Concrete
             _commentDal = commentDal;
         }
 
-        public Comment GetById(int id)
+        public Comment TGetById(int id)
         {
             return _commentDal.GetByID(id);
         }

@@ -531,4 +531,110 @@ Bu derste ilk olarak Blog Contoller içine BlogAdd adlı controller'ı oluşturu
 
 controller'ı bu şekilde yazdıktan sonra View ekleyip form yapısını kuruyoruz. asp-for ile kimin için olduğunu söyleyip verileri kaydettirdik.
 
+# 56 Ders (Blog Ekleme İşleminde Kategorilerin Dropdown Aracından Çekilmesi)
+Çok çok çok öenmli bir ders öncelikle BlogController'da
+
+[HttpGet]
+        public IActionResult BlogAdd()
+        {
+            CategoryManager cm = new CategoryManager(new EfCategoryRepository());
+            List<SelectListItem> categoryvalues = (from x in cm.GetList()
+                                                   select new SelectListItem
+                                                   {
+                                                       Text = x.CategoryName,
+                                                       Value = x.CategoryID.ToString()
+                                                   }).ToList();
+            ViewBag.cv = categoryvalues;
+
+            return View();
+        }
+
+kısmını güncelliyoruz ardından html tarafını
+
+<div class="form-group">
+                        <label>Kategori</label>
+                        @Html.DropDownListFor(x=>x.CategoryID,(List<SelectListItem>)ViewBag.cv,new {@class="form-control"})
+                    </div>
+
+olarak güncelliyoruz ve ardın kategori adına göre seçim yapıp ekleme yapıyoruz.
+
+# 57 Ders (Bloglarda Kategori Adının Listelenmesi EfBlogRepository Revizeleri)
+Bu derste yazara ait blogları getirirken categoryname gelmediği için 
+
+IBlogDal'da -> List<Blog> GetListWithCategoryByWriter(int id);
+EfBlogRepository'de ->  public List<Blog> GetListWithCategoryByWriter(int id)
+                              {
+                                  using (var c = new Context())
+                                  {
+                                       return c.Blogs.Include(x => x.Category).Where(x => x.WriterID == id).ToList();
+                                  }
+                              }
+
+BlogManager'da ->  public List<Blog> GetListWithCategoryByWriterBM(int id)
+                       {
+                           return _blogDal.GetListWithCategoryByWriter(id);
+
+                       }
+
+güncellemelerini yapıp BlogController'da
+public IActionResult BlogListByWriter()
+        {
+            var values = bm.GetListWithCategoryByWriterBM(1);
+            return View(values);
+        }
+yazıp verinin istediğimiz gibi geldiğini gördük.
+
+# 58 Ders (Blog Silme)
+Silme işlemi için BlogController'a
+
+ public IActionResult DeleteBlog(int id)
+        {
+            var blogvalue = bm.TGetById(id);
+            bm.TDelete(blogvalue);
+            return RedirectToAction("BlogListByWriter", "Blog");
+        }
+
+ardından indexinde link verip dersi tamamladık.
+
+# 59 Ders (Düzenlenecek Bloga Ait Verilerin Getirilmesi)
+Bu derste ilk olarak BlogController'da EditBlog için
+
+[HttpGet]
+        public IActionResult EditBlog(int id)
+        {
+            var blogvalue = bm.TGetById(id);
+
+            CategoryManager cm = new CategoryManager(new EfCategoryRepository());
+            List<SelectListItem> categoryvalues = (from x in cm.GetList()
+                                                   select new SelectListItem
+                                                   {
+                                                       Text = x.CategoryName,
+                                                       Value = x.CategoryID.ToString()
+                                                   }).ToList();
+            ViewBag.cv = categoryvalues;
+            return View(blogvalue);
+        }
+
+        [HttpPost]
+        public IActionResult EditBlog(Blog blog)
+        {
+            return View();
+        }
+
+kodlarını yazıp EditBlog Viewini AddBlogtan kopyalayıp yapıştırdığımızda seçtiğimiz satırın bilgilerinin geldiğini gördük.
+
+# 60 Ders (Blogların Güncellenmesi)
+Bu derste güncelleme işlemini tamamlamak için
+[HttpPost]
+        public IActionResult EditBlog(Blog blog)
+        {
+            blog.BlogCreatDate = DateTime.Parse(DateTime.Now.ToString());
+            blog.BlogStatus = true;
+            bm.TUpdate(blog);
+            return RedirectToAction("BlogListByWriter", "Blog");
+        }
+
+kodunu yazdıktan sonra ViewTarafında WriterID ve BlogID yi hidden olarak belirtiyoruz.
+
+
 

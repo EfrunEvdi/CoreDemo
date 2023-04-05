@@ -88,3 +88,18 @@ Kısaca Claim anlatmamız gerekirse Örneğin:Youtobe'a giriş yaptık ve Youtob
 52. Video: Mesajların 24 saatlik dilim içinde gönderilmiş ise ne kadar süre önce gönderildiği yazdırılacak.(?)
 
 54. Video: Yazar panelinde Purple logosu yerine kendi blogunuzun logosunu koyun.
+
+56. Video
+Ödev
+Selected = seçilen değeri getirir ekrana yansıtır
+örnek olarak (x.CategoryId = 2 ? true : false), x den gelen CategoryId eşitse ikiye true olucak yani seçili olarak ekrana yansısın
+
+Disabled = değeri pasif yapar yani seçim yaptırmaz
+kullanımı ise (x.CategoryId = 1 ? true : false), x den gelen CategoryId eşite bire true olucak yani gelen değeri bize seçtirmiyecek. Projeyi çalıştırdığımızda değeri gri tonda görücez ve üzerine geldiğimizde seçim yapamıyacağız.
+
+Group = adından da anlaşıldığı gibi gruplama işlemlerinde kullanılıyor.
+Örnek olarak 2 kategorimizin oldugunu dusunelim yazılım ve oyun. Yazılım ve Oyun başlıkları altında bloglar listeleniyor işlem tam olarak böyle oluyor. Başlıklar koyu olarak belirtilir.
+
+57. Video: Durum kısmında true yerine aktif false yerine pasif yazdırılacak.
+
+Ödev : Blog silme işlemi yapmadan önce bir tane pop-up yada mesaj açılsın ve gerçekten silmek istediğinizden emin misiniz ? Diye sorsun.
