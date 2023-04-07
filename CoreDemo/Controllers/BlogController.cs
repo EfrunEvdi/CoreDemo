@@ -60,7 +60,7 @@ namespace CoreDemo.Controllers
             if (results.IsValid)
             {
                 blog.BlogStatus = true;
-                blog.BlogCreatDate = DateTime.Parse(DateTime.Now.ToString());
+                blog.BlogCreateDate = DateTime.Parse(DateTime.Now.ToString());
                 blog.WriterID = 1;
 
                 bm.TAdd(blog);
@@ -104,7 +104,7 @@ namespace CoreDemo.Controllers
         [HttpPost]
         public IActionResult EditBlog(Blog blog)
         {
-            blog.BlogCreatDate = DateTime.Parse(DateTime.Now.ToString());
+            blog.BlogCreateDate = DateTime.Parse(DateTime.Now.ToString());
             blog.BlogStatus = true;
             bm.TUpdate(blog);
             return RedirectToAction("BlogListByWriter", "Blog");

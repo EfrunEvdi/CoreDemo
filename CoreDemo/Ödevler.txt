@@ -103,3 +103,10 @@ Group = adından da anlaşıldığı gibi gruplama işlemlerinde kullanılıyor.
 57. Video: Durum kısmında true yerine aktif false yerine pasif yazdırılacak.
 
 Ödev : Blog silme işlemi yapmadan önce bir tane pop-up yada mesaj açılsın ve gerçekten silmek istediğinizden emin misiniz ? Diye sorsun.
+
+63. Video: Col
+Bootstrap sisteminin sunmuş olduğu kolon(Izgara) sistemidir.  Sayfa normalde 12 eşit parçaya bölünür.  Bu parçalardan kaç tanesini kullanmak istiyorsanız ona göre değer girebilirsiniz.
+col-sm  |   col-md   |  col-lg   | col-xl   gibi ayrımları vardır. Bu sistemle beraber tüm cihazlarda nasıl görünmesini istiyorsanız o şekilde ayarlayabilirsiniz.
+Örneğin  class="col-xl-6 col-sm-12" dediğinizde yüksek çözünürlülüklü bilgisayar ekranında alanın yarısını alırken telefon veya tablet gibi cihazlarda alanın tamamını kaplar.
+
+68. Video : Writer template i için logo

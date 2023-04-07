@@ -636,5 +636,83 @@ Bu derste güncelleme işlemini tamamlamak için
 
 kodunu yazdıktan sonra ViewTarafında WriterID ve BlogID yi hidden olarak belirtiyoruz.
 
+# 61 Ders (Yazar İçin Dashboard Hazırlığı)
+Bu derste dashboard'ı kendi templateimize uygun hale getirdik.
+
+# 62 Ders (DashBoard Düzenlemeleri 1)
+Bu derse ilk olarak Dashboard'u türkleştirmekle başlıyoruz ardından burdaki tabloyu kullanabilmek adına BlogListDashboard adlı component yapısını kurup tablo yapısını kullandık.
+
+# 63 Ders (Dashboard Düzenlemeleri 2)
+Bu derste Dashboardu düzenlemeye CategoryListDashboard için component yapısı kurarark devam ettik.
+
+# 64 Ders (Trigger Kullanımı)
+Create Trigger TestArttir
+On Table_2
+After Insert
+As
+Update Table_1 Set Toplam = Toplam+1
+
+Create Trigger TestAzalt
+On Table_2
+After Delete
+As
+Update Table_1 Set Toplam =Toplam-1
+
+yazımı ile trigger kulanımını öğrendik.
+
+# 65 Ders (Parametreli Trigger Kullanımı)
+Create Trigger PuanArttir
+On Table_3
+After Insert
+As
+Declare @p int
+Declare @k int
+Select @p=Table_2.P,@k=Kategory from inserted
+Update Table_2 Set Puan=Puan+@p where ID=@k
+
+sorgusu ile parametreli olarak öğrendik.
+
+# 66 Ders (Blog Reyting Tablosu)
+Bu derste ilk olarak comment tablosuna BlogScore adlı satırı ekleyip migration ekliyoruz.
+Ardından BlogRayting tablosunu EntityLAyer'a dahil edip dersi bitirdik.
+
+# 67 Ders (Yorumlar Tablosunda Tetikleyicilerin Tanımlanması)
+Bu derste öncelikle aşağıdaki sorguyu yazarak Blog eklendiğinde reyting tablosuna eklettirdik.
+Create Trigger AddBlogInRaytingTable
+On Blogs
+After Insert
+As
+Declare @ID int
+Select @ID=BlogID from inserted
+Insert Into BlogRaytings (BlogID,BlogTotalScore,BlogRaytingCount)
+Values (@ID,0,0)
+
+Devamında aşağıdaki sorguyu yazarak toplam puan ve oy sayısını reyting tablosuna eklettirdik.
+Create Trigger AddScoreInComment
+On Comments
+After Insert
+As
+Declare @ID int
+Declare @Score int
+Declare @RaytingCount int
+Select @ID=BlogID,@Score=BlogScore from inserted
+Update BlogRaytings Set BlogTotalScore=BlogTotalScore+@Score, BlogRaytingCount+=1
+Where BlogID=@ID
+
+# 68 Ders (Dashboard Düzenlemeleri 3)
+Bu derste ilk olarak WriterAboutOnDashboard için component yapısı kuruyoruz.
+
+ardından kişiye ait bilgileri getirebilmek için BusinessLayer'da aşağıdaki kodu ekledik.
+
+public List<Writer> GetWriterByID(int id)
+        {
+            return _writerDal.GetListAll(x => x.WriterID == id);
+        }
+
+# 69 Ders (Dashboard Düzenlemeleri 4)
+Bu derste WriterAboutOnDashboard'yi düzenleyerek kendimize uygun hale getiriyoruz. Devamında bu kısmın içeriğini düzenledik.
+
+# 70 Ders (Dashboard İstatistikleri)
+Bu derste Writer dashboard ın istatistiksel bilgilerini çekmek için DashBoardController'da ViewBaglerle işlem yaptık.
 
 
