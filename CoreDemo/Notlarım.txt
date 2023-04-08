@@ -643,7 +643,7 @@ Bu derste dashboard'ı kendi templateimize uygun hale getirdik.
 Bu derse ilk olarak Dashboard'u türkleştirmekle başlıyoruz ardından burdaki tabloyu kullanabilmek adına BlogListDashboard adlı component yapısını kurup tablo yapısını kullandık.
 
 # 63 Ders (Dashboard Düzenlemeleri 2)
-Bu derste Dashboardu düzenlemeye CategoryListDashboard için component yapısı kurarark devam ettik.
+Bu derste Dashboardu düzenlemeye CategoryListDashboard için component yapısı kurararak devam ettik.
 
 # 64 Ders (Trigger Kullanımı)
 Create Trigger TestArttir
@@ -715,4 +715,59 @@ Bu derste WriterAboutOnDashboard'yi düzenleyerek kendimize uygun hale getiriyor
 # 70 Ders (Dashboard İstatistikleri)
 Bu derste Writer dashboard ın istatistiksel bilgilerini çekmek için DashBoardController'da ViewBaglerle işlem yaptık.
 
+# 71 Ders (Yazar Profil Bilgilerini Listeleme)
+Bu derste ilk olarak WriterController'a
 
+public IActionResult WriterEditProfile()
+        {
+            var writervalues = wm.TGetById(1);
+            return View(writervalues);
+        }
+
+güncellemesini yaparak View ekliyoruz ve bu viewde form yapısını kurduktan sonra verilerin geldiğini görüyoruz.
+
+# 72 Ders (Yazar Bilgilerinin Güncellenmesi)
+Bu derste HttpPost kısmı il bir önceki dersi tam anlamıyla tamamlamış olduk.
+
+# 73 Ders (Profil Fotoğrafını Dosyadan Yükleme) (Önemli)
+Bu derste ilk olarak AddProfileImage adlı modeli oluşturup içini Writer entitsinden alıp koyalıyoruz. Devamında WriterController'da
+
+[HttpGet]
+        public IActionResult WriterAdd()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult WriterAdd(AddProfileImage p)
+        {
+            Writer writer = new Writer();
+
+            if (p.WriterImage != null)
+            {
+                var extension = Path.GetExtension(p.WriterImage.FileName);
+                var newimagename = Guid.NewGuid() + extension;
+                var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/WriterImageFile/", newimagename);
+                var stream = new FileStream(location, FileMode.Create);
+                p.WriterImage.CopyTo(stream);
+                writer.WriterImage = "/WriterImageFile/" + newimagename;
+            }
+
+            writer.WriterName = p.WriterName;
+            writer.WriterAbout = p.WriterAbout;
+            writer.WriterMail = p.WriterMail;
+            writer.WriterPassword = p.WriterPassword;
+            writer.WriterConfirmPassword = p.WriterConfirmPassword;
+            writer.WriterStatus = true;
+
+            wm.TAdd(writer);
+            return RedirectToAction("Index", "Dashboard");
+        }
+
+güncellemesini yapıp View ekliyoruz bu view'i EditWriter'dan alıyoruz. Using olarak model verip ekleme işleminin başarılı bir şekilde geldiğini görüyoruz.
+
+# 74 Ders (Notification Sınıfı)
+Bu derste bildirimler için Notification Entitisini ekliyoruz ve context'e de tanımladıktan sonra migration yapıyoruz. Ardından DataAccessLayer ve BusinessLayer'a bu sınıfa ait interface ve sınıfları dahil edip dersi bitiriyoruz.
+
+# 75 Ders (Bildirimlerin Listelenmesi)
+Bu derste bildirimlerle ilgili olarak WriterLayout/WriterNotification için component yapısını zaten kurmuştuk bu kısımlarla ilgilenip verileri alıp dersi bitirdik.

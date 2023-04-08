@@ -25,4 +25,8 @@
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\WriterImageFile\" />
+  </ItemGroup>
+
 </Project>

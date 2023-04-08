@@ -110,3 +110,5 @@ col-sm  |   col-md   |  col-lg   | col-xl   gibi ayrımları vardır. Bu sisteml
 Örneğin  class="col-xl-6 col-sm-12" dediğinizde yüksek çözünürlülüklü bilgisayar ekranında alanın yarısını alırken telefon veya tablet gibi cihazlarda alanın tamamını kaplar.
 
 68. Video : Writer template i için logo
+
+73. Video: GUID'in orjinal açılımı “Globally Unique IDentifier” dır. Türkçe kaynaklarda çevirisi “Genel Benzersiz Tanımlayıcı” olarak tanımlanmıştır. Burdaki olayı ekleyeceğimiz resim dosyası adının aynı resim olsa bile arka tarafta farklı isimlerle kaydedilmesini sağlar. Yani resim dosyalarımız karışmasın diye bize benzersiz dosya adları eklememizi sağlar.
