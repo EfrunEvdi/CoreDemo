@@ -1,0 +1,87 @@
+﻿@model List<Notification>
+
+@{
+    ViewData["Title"] = "AllNotification";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Tüm Bildirimler</h4>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th> # </th>
+                                <th> Bildirim Görseli </th>
+                                <th> Bildirim </th>
+                                <th> Bidirim Detayı </th>
+                                <th> Bildirim Tarihi </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td> @item.NotificationID </td>
+                                    <td>
+                                        <div class="preview-thumbnail text-center">
+                                            <div class="@item.NotificationTypeColor">
+                                                <i class="@item.NotificationTypeSymbol"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td> @item.NotificationType </td>
+                                    <td> @item.NotificationDetails </td>
+
+                                    @{
+                                        DateTime simdi = DateTime.Now;
+
+                                        TimeSpan fark = simdi.Subtract(item.NotificationDate);
+                                        long saniye = (long)fark.TotalSeconds;
+
+                                        TimeSpan zaman = TimeSpan.FromSeconds(saniye);
+
+                                        int gun = zaman.Days;
+                                        int saat = zaman.Hours;
+                                        int dakika = zaman.Minutes;
+                                        int kalanSaniye = zaman.Seconds;
+                                    }
+
+                                    @if (gun != 0)
+                                    {
+                                        <td>
+                                            @gun gün @saat saat @dakika dakika @kalanSaniye saniye önce
+                                        </td>
+                                    }
+                                    else if (gun == 0 && saat != 0)
+                                    {
+                                        <td>
+                                            @saat saat @dakika dakika @kalanSaniye saniye önce
+                                        </td>
+                                    }
+                                    else if (gun == 0 && saat == 0 && dakika != 0)
+                                    {
+                                        <td>
+                                            @dakika dakika @kalanSaniye saniye önce
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            @kalanSaniye saniye önce
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

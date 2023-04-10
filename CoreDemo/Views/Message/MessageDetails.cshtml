@@ -1,0 +1,31 @@
+﻿@model Message2
+
+@{
+    ViewData["Title"] = "MessageDetails";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"> Mesaj Detayı </h4>
+                <p></p>
+                <form class="forms-sample">
+                    <div class="form-group">
+                        <label>Mesaj Başlığı</label>
+                        <input type="text" asp-for="Subject" class="form-control" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Mesaj İçeriği</label>
+                        <textarea class="form-control" rows="4" asp-for="MessageDetails" disabled></textarea>
+                    </div>
+                    <a href="/Message/InBox/" class="btn btn-gradient-primary mr-2">Mesajlara Dön!</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+

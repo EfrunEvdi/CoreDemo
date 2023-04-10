@@ -112,3 +112,21 @@ col-sm  |   col-md   |  col-lg   | col-xl   gibi ayrımları vardır. Bu sisteml
 68. Video : Writer template i için logo
 
 73. Video: GUID'in orjinal açılımı “Globally Unique IDentifier” dır. Türkçe kaynaklarda çevirisi “Genel Benzersiz Tanımlayıcı” olarak tanımlanmıştır. Burdaki olayı ekleyeceğimiz resim dosyası adının aynı resim olsa bile arka tarafta farklı isimlerle kaydedilmesini sağlar. Yani resim dosyalarımız karışmasın diye bize benzersiz dosya adları eklememizi sağlar.
+
+76. Video: Yazar'ın Bildirimler kısmında bütün bildirimler gözükmesin sadece durumu aktif olanlar gözüksün.
+
+79. Video: Bildirimlerin kaç saat vs önce olduğu gözükecek.
+
+80.Video IsRequired ve OnDelete ne anlama gelir.
+
+IsRequired : özelliği, ASP.NET MVC'deki veri doğrulama (validation) işlemleri için kullanılır. Bu özellik, belirtilen model özelliğinin (property) boş bırakılamayacağını ve dolayısıyla ilgili form elemanının değerinin doldurulması gerektiğini belirtir.
+
+OnDelete : OnDelete, Entity Framework (EF) ile birlikte kullanılan bir Fluent API öğesidir ve ilişkisel veritabanlarında birincil anahtar (primary key) ve dış anahtar (foreign key) arasındaki bağımlılık ilişkilerinde kullanılır.
+
+OnDelete, bir kayıt silindiğinde, ilişkili dış anahtar değerlerinin nasıl davranacağını belirlemek için kullanılır. Özellikle, EF'de varsayılan olarak, dış anahtar ile ilişkili kayıt silinirse, bu durumda, veritabanı motoru tarafından hata alınır.
+
+OnDelete özelliği, bu hata durumunu engellemek ve kaynak ve hedef arasındaki ilişkiyi uygun şekilde güncellemek için kullanılır. Bu özellik, önceden belirlenmiş davranışlar içerir ve kullanıcıya seçim yapma olanağı verir.
+
+.OnDelete(DeleteBehavior.ClientSetNull) : .OnDelete(DeleteBehavior.ClientSetNull) ifadesi, Entity Framework Core (EF Core) ile kullanılan Fluent API'deki bir özelliktir. Bu özellik, bir dış anahtar (foreign key) ile ilişkili bir anahtar kaydı (primary key record) silindiğinde, dış anahtarın null olarak ayarlanmasını sağlar.
+
+Bu davranış, birincil anahtarın silinmesi durumunda, dış anahtarın null değer almasını sağlayarak, bu kayıtla ilişkili diğer kayıtların korunmasını ve dış anahtarın null olmadığından emin olur.

@@ -771,3 +771,220 @@ Bu derste bildirimler için Notification Entitisini ekliyoruz ve context'e de ta
 
 # 75 Ders (Bildirimlerin Listelenmesi)
 Bu derste bildirimlerle ilgili olarak WriterLayout/WriterNotification için component yapısını zaten kurmuştuk bu kısımlarla ilgilenip verileri alıp dersi bitirdik.
+
+# 76 Ders (Bildirim İşlemlerinin Tamamlanması)
+Bu derste öncelikle Notification tablosuna veriler girip iconları ve renkleri ile getirdik devamında Sidebar'a link verdik ve ekstra olarak logo ile ilgilendim.
+
+# 77 Ders (Mesaj Sınıfı)
+Bu derste Message entitisini projeye dahil edip buna bağlı olarak business ve Dataaccess te gerekli interface ve sınıfları ekliyoruz. Ardından IMessageServicede
+
+        List<Message> GetInboxListByWriter(string p);
+
+devamında
+
+public List<Message> GetInboxListByWriter(string p)
+        {
+            return _messageDal.GetListAll(x => x.Receiver == p);
+        }
+
+ile implement edip dersi bitiriyoruz.
+
+# 78 Ders (Mesaj Bildirimlerinin Tamamlanması)
+Bu derste daha önce oluşturmuş olduğumuz WriterMessageNotification Componenti
+
+ MessageManager mm = new MessageManager(new EfMessageRepository());
+
+        public IViewComponentResult Invoke()
+        {
+            string p;
+            p = "efruncetkin@gmail.com";
+            var values = mm.GetInboxListByWriter(p);
+            return View(values);
+        }
+
+yazarak Default'u foreach ile döngüyü sokarak dersi bitirdik.
+
+# 79 Ders (Bildirimlerin Listelenmesi)
+Bu derste ilk olarak tüm bildirimeri görebilmek için NotificationController açıyoruz ve view ekliyoruz bu viewdeki ödev için
+
+@foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td> @item.NotificationID </td>
+                                    <td>
+                                        <div class="preview-thumbnail text-center">
+                                            <div class="@item.NotificationTypeColor">
+                                                <i class="@item.NotificationTypeSymbol"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td> @item.NotificationType </td>
+                                    <td> @item.NotificationDetails </td>
+
+                                    @{
+                                        DateTime simdi = DateTime.Now;
+                                        
+                                        TimeSpan fark = simdi.Subtract(item.NotificationDate);
+                                        long saniye = (long)fark.TotalSeconds;
+
+                                        TimeSpan zaman = TimeSpan.FromSeconds(saniye);
+
+                                        int gun = zaman.Days;
+                                        int saat = zaman.Hours;
+                                        int dakika = zaman.Minutes;
+                                        int kalanSaniye = zaman.Seconds;
+                                    }
+
+                                    @if (gun != 0)
+                                    {
+                                        <td>
+                                            @gun gün @saat saat @dakika dakika @kalanSaniye saniye önce
+                                        </td>
+                                    }
+                                    else if (gun == 0 && saat != 0)
+                                    {
+                                        <td>
+                                            @saat saat @dakika dakika @kalanSaniye saniye önce
+                                        </td>
+                                    }
+                                    else if (gun == 0 && saat == 0 && dakika != 0)
+                                    {
+                                        <td>
+                                            @dakika dakika @kalanSaniye saniye önce
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            @kalanSaniye saniye önce
+                                        </td>
+                                    }
+                                </tr>
+                            }
+
+ile kaç gün kaç dakika kaçsaniye olduğunu görebiliyoruz.
+
+# 80 Ders (Entity Framework Code First Two Foreign Keys From Same Table) (Önemli)
+Bu derste öncelikle Team ve Match adlı iki entity'i projeye dahli edip Team classında 
+
+public virtual ICollection<Match> HomeMatches { get; set; }
+public virtual ICollection<Match> AwayMatches { get; set; }
+
+        /* Bu kod örneği, Entity Framework Core (EF Core) kullanılarak bir ilişki modelini tanımlamak için kullanılan iki ICollection özelliğidir. Bu özellikler, bir takım ile ev sahibi veya konuk olarak oynadıkları tüm maçları tutar.
+
+          HomeMatches özelliği, takımın ev sahibi olarak oynadığı tüm maçların koleksiyonunu tutar. Bu koleksiyonda, Match sınıfından bir nesne bulunur.
+
+          AwayMatches özelliği ise takımın konuk olarak oynadığı tüm maçların koleksiyonunu tutar. Bu koleksiyonda da Match sınıfından bir nesne bulunur.
+
+          Bu ilişki, Match sınıfındaki HomeTeam ve GuestTeam özellikleriyle ilişkilidir. Bu özellikler, sırasıyla, maçın ev sahibi takımını ve konuk takımını belirtir. HomeMatches ve AwayMatches özellikleri, her bir takımın oynadığı maçlarla ilişkilidir ve bu özellikler, bir takım silindiğinde, bu takımla ilgili tüm maç kayıtlarının da silinmesini önlemek için kullanılır.
+        */
+
+devamında bu iki classı Context tarafında tanımladıktan sonra
+
+ protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Match>()
+                .HasOne(x => x.HomeTeam)
+                .WithMany(y => y.HomeMatches)
+                .HasForeignKey(z => z.HomeTeamID)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            modelBuilder.Entity<Match>()
+                .HasOne(x => x.GuestTeam)
+                .WithMany(y => y.AwayMatches)
+                .HasForeignKey(z => z.GuestTeamID)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        }
+
+        /* Bu kod, Entity Framework Core (EF Core) kullanılarak bir ilişki modelini kurmak için Fluent API'yi kullanır. Bu özellik, iki farklı ilişkiyi belirler: "HomeTeam" ve "GuestTeam" arasındaki birçoklu ilişki.
+
+        OnModelCreating yöntemi, veritabanı modelinin tanımlandığı yerdir.Bu yöntem, bir ModelBuilder nesnesi tarafından kullanılarak veritabanı modeli için kuralların ayarlanmasına izin verir.
+
+        Bu kod örneğinde, Match tablosu birincil tablodur ve HomeTeam ve GuestTeam tablolarıyla ilişkilidir.Ayrıca, Match tablosunun HomeTeamID ve GuestTeamID alanları, sırasıyla, HomeTeam ve GuestTeam tablolarının anahtar alanları ile eşleşir.
+
+
+        Bu kod, Match tablosunun HomeTeam alanı için bir ilişki belirtir ve HasOne, WithMany ve HasForeignKey metodları aracılığıyla bu ilişkiyi tanımlar. Aynı işlem GuestTeam alanı için de yapılır.
+        
+
+        .OnDelete(DeleteBehavior.ClientSetNull) ifadesi her iki durumda da kullanılır ve "ClientSetNull" silme davranışını belirtir.Bu, bir takım silindiğinde, o takımla ilgili tüm maç kayıtlarının takım alanlarının null olarak ayarlanmasını sağlar. 
+        */
+
+ile çoklu ilişki yapısını görüyoruz ardından migration ile sql tarafına geçtiğimizde bu yapının sağlıklı bir şekilde kurulduğunu görüyoruz.
+
+# 81 Ders (Mesajlarla Yazarların İlişkilendirilmesi)
+Bu derste ilk olarak message2 adlı entityi oluşturuyoruz
+Team => Writer
+Match => Message2 ye denk geliyor. 
+
+Message2 =>
+
+public Writer SenderUser { get; set; }
+public Writer ReceiverUser { get; set; }
+
+Writer => 
+
+public virtual ICollection<Message2> WriterSender { get; set; }
+public virtual ICollection<Message2> WriterReceiver { get; set; }
+
+ardından Context'te bu iki sınıfı tanımlayıp ;
+
+modelBuilder.Entity<Message2>()
+                .HasOne(x => x.SenderUser)
+                .WithMany(y => y.WriterSender)
+                .HasForeignKey(z => z.SenderID)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+modelBuilder.Entity<Message2>()
+                .HasOne(x => x.ReceiverUser)
+                .WithMany(y => y.WriterReceiver)
+                .HasForeignKey(z => z.ReceiverID)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+yazarak çoklu ilişki oluşturduk ve dersi bitirdik.
+
+# 82 Ders (Yazara Ait Mesaj Bildirimleri)
+Oluşturmuş olduğumuz Message2 adlı entity nin dal ve business layerdaki eklemelerini yapıyoruz.
+
+IMessageService'de;
+
+        List<Message2> GetInboxListByWriter(int id);
+
+Message2Manager'de;
+
+        public List<Message2> GetInboxListByWriter(int id)
+        {
+            return _message2Dal.GetListAll(x => x.ReceiverID == id);
+        }
+
+kodlarını yazarak id'ye gör mesajları listeleyeceğiz.
+
+Ardından WriterMessageNotification'da message2 yi çağırarak Defaul'unda listelettirdik.
+
+# 83 Ders (Message Include)
+Bu deste öncelikle IMessage2Dal'a;
+
+        List<Message2> GetListWithMessageByWriter(int id);
+
+daha sonra EfMessage2Repository'e;
+
+        public List<Message2> GetListWithMessageByWriter(int id)
+        {
+            using (var c = new Context())
+            {
+                return c.Message2s.Include(x => x.SenderUser).Where(x => x.ReceiverID == id).ToList();
+            }
+        }
+
+devamında Message2Manager'a;
+
+public List<Message2> GetInboxListByWriter(int id)
+        {
+            return _message2Dal.GetListWithMessageByWriter(id);
+        }
+
+kodlarını yazdık. Devamında component'e bu kodlar sayesinde gönderenin adını ve resmini getirebildik getirebildik. Zamanı üstteki gibi çektim.
+
+# 84 Ders (Mesaj Detaylarının Listelenmesi)
+Bu derste öncelikle MessageController açıp Inbox ve MessageDetails için bu view oluşturup uygun şekilde doldurup dersi bitirdik.
+
+# 85 Ders (Get Logged User Name)

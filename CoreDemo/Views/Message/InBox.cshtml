@@ -1,0 +1,42 @@
+﻿@model List<Message2>
+
+@{
+    ViewData["Title"] = "InBox";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Gelen Mesaj Kutusu</h4>
+        <table class="table table-hover table-responsive">
+            <thead>
+                <tr>
+                    <th> # </th>
+                    <th> Profil Resmi </th>
+                    <th> Gönderen </th>
+                    <th> Konu </th>
+                    <th> Gönderme Tarihi </th>
+                    <th> Mesajı Aç </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td> @item.MessageID </td>
+                        <td class="py-1">
+                            <img src="@item.SenderUser.WriterImage" alt="image" />
+                        </td>
+                        <td> @item.SenderUser.WriterName </td>
+                        <td> @item.Subject </td>
+                        <td> @(((DateTime)item.MessageDate).ToString("dd-MMM-yyyy")) </td>
+                        <td> <a href="/Message/MessageDetails/@item.MessageID" class="btn btn-outline-success mt-3">Mesajı Aç!</a> </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a href="/Blog/AddBlog/" class="btn btn-outline-primary mt-3">Yeni Mesaj Oluştur!</a>
+    </div>
+</div>
+
+
