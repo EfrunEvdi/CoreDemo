@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Concrete;
 using BusinessLayer.ValidationRules;
+using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
@@ -12,7 +13,6 @@ using System.Linq;
 
 namespace CoreDemo.Controllers
 {
-    [AllowAnonymous]
     public class BlogController : Controller
     {
         BlogManager bm = new BlogManager(new EfBlogRepository());
@@ -32,7 +32,10 @@ namespace CoreDemo.Controllers
 
         public IActionResult BlogListByWriter()
         {
-            var values = bm.GetListWithCategoryByWriterBM(1);
+            Context context = new Context();
+            var usermail = User.Identity.Name;
+            var writerID = context.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterID).FirstOrDefault();
+            var values = bm.GetListWithCategoryByWriterBM(writerID);
             return View(values);
         }
 
@@ -57,11 +60,15 @@ namespace CoreDemo.Controllers
             BlogValidator bv = new BlogValidator();
             ValidationResult results = bv.Validate(blog);
 
+            Context context = new Context();
+            var usermail = User.Identity.Name;
+            var writerID = context.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterID).FirstOrDefault();
+
             if (results.IsValid)
             {
                 blog.BlogStatus = true;
                 blog.BlogCreateDate = DateTime.Parse(DateTime.Now.ToString());
-                blog.WriterID = 1;
+                blog.WriterID = writerID;
 
                 bm.TAdd(blog);
                 return RedirectToAction("BlogListByWriter", "Blog");

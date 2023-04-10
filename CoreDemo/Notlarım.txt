@@ -988,3 +988,35 @@ kodlarını yazdık. Devamında component'e bu kodlar sayesinde gönderenin adı
 Bu derste öncelikle MessageController açıp Inbox ve MessageDetails için bu view oluşturup uygun şekilde doldurup dersi bitirdik.
 
 # 85 Ders (Get Logged User Name)
+Bu derste WriterController'da
+
+[Authorize]
+        public IActionResult Index()
+        {
+            var usermail = User.Identity.Name;
+            ViewBag.v = usermail;
+            Context context = new Context();
+            var writerName = context.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterName).FirstOrDefault();
+            ViewBag.v2 = writerName;
+            return View();
+        }
+
+kodu ile giriş yapan kullanıcının mailini ve ismini çektik.
+
+# 86 Ders (Login Olan Yazarın Bilgilerini Getirme)
+Bu derste bir önceki derste yaptığımız yöntemle artık 1. ID'ye göre değil sisteme otantike olmuş kullanıcıya göre işlem yaptırdık.
+-> BlogController
+-> DashboardController
+-> WriterAboutOnDashboard
+
+# 87 Ders (Admin Teması)
+Bu derste admin temamızı projeye dahil ediyoruz. Devamında shared içinde admin için bir layout oluşturup link verip dersi bitirdik.
+
+# 88 Ders (Admin Layout Düzenlemesi)
+Bu derste Admin layoutu için sidebar partial'ı açtık ve dünledik.
+
+# 89 Ders (Areas)
+Bu derste areanın tanımında ve açma işleminde bahsedildi. UI katmanına Area klasörünü ekleyip add -> area -> mvc area -> Admin olarak açtık.
+
+# 90 Ders (Areas Map Controller Route)
+Bu derste Admin areasının içine CategoryController ekleyip view ekledik. Ardından bu viewin çalışmadığını gördük çünkü scaffolding dosyası ile gelen areanın bu dosya içindeki kodu startupta UseEndpoints içine yazmamız gerekiyor. Ardından sayfa çalıştı. Controller'a [Area("Admin")] yazmayı unutmuyoruz.

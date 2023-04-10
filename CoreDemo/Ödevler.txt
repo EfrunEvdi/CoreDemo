@@ -130,3 +130,18 @@ OnDelete özelliği, bu hata durumunu engellemek ve kaynak ve hedef arasındaki 
 .OnDelete(DeleteBehavior.ClientSetNull) : .OnDelete(DeleteBehavior.ClientSetNull) ifadesi, Entity Framework Core (EF Core) ile kullanılan Fluent API'deki bir özelliktir. Bu özellik, bir dış anahtar (foreign key) ile ilişkili bir anahtar kaydı (primary key record) silindiğinde, dış anahtarın null olarak ayarlanmasını sağlar.
 
 Bu davranış, birincil anahtarın silinmesi durumunda, dış anahtarın null değer almasını sağlayarak, bu kayıtla ilişkili diğer kayıtların korunmasını ve dış anahtarın null olmadığından emin olur.
+
+86.Video: Solidin ezilmemesi için context nasıl tutulmalı
+
+Bağımlılıkların tersine çevrilmesi prensibine uygun olarak, Context sınıfı tarafından kullanılan diğer nesneler için arayüzler kullanabilirsiniz. Böylece, Context sınıfı, uygulama kodundaki diğer sınıflara bağımlılık oluşturmadan nesnelerle iletişim kurabilir.
+
+İlkeye tek sorumluluk prensibi uygun olarak, Context sınıfının sadece bir işlevi olmalıdır. Bu nedenle, Context sınıfında, yalnızca sınıfın amacıyla ilgili yöntemler yer almalıdır. Başka bir deyişle, Context sınıfı, tek bir işlevi yerine getirmeli ve bu işlev için gereken her şeyi içermelidir.
+
+Açık kapalı prensibi uyarınca, Context sınıfı, uygulama kodunda değişiklik yapmadan nesnelerle iletişim kurabilmelidir. Bu, Context sınıfının uygulama koduna göre değiştirilemeyeceği anlamına gelir. Bunun yerine, uygulama kodundaki diğer nesnelerin Context sınıfına bağımlılıklarını tersine çevirerek bu prensibi sağlayabilirsiniz.
+
+87.Video: RenderBody ve RenderSection
+RenderBody : Master Page yapısı kurmamızı sağlar.
+RenderSection ise Layout sayfasının istediğimiz bir alanında veri göstermemizi sağlar. Ayrıca " RenderSection("parametre", required: false) " bu şekilde tamamladığımızda zorunluğunu iptal edebiliriz. Bu sayede tanımladığımız parametreye ait rendersection boş bile gelse sayfada hata almayız.
+
+Tam ayırtman özelliğini söylemek gerekirse RenderBody her sayfada kullanılıyorken RenderSection istediğimiz sayfalarda gösterebiliriz.
+

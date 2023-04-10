@@ -1,6 +1,31 @@
-﻿
-@{
-    Layout = null;
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
 }
 
-<h1>Burası yazar paneli</h1>
+@*<h1>Burası yazar paneli</h1>
+<h2>@ViewBag.v</h2>
+<h2>@ViewBag.v2</h2>
+<h3>Hoşgeldiniz @ViewBag.v2</h3>*@
+
+<header>
+    <div class="container text-center mt-5">
+        <img src="yazar-resmi.jpg" class="img-fluid rounded-circle mb-4" alt="Yazar Resmi">
+        <h1>Yazar Adı</h1>
+        <p class="lead">Hakkında Bilgi</p>
+    </div>
+</header>
+
+<main class="container my-5">
+    <section>
+        <h2>Yazılar</h2>
+        <p>Bu alana yazarın yazıları eklenebilir.</p>
+    </section>
+
+    <section>
+        <h2>İletişim</h2>
+        <p>Mail: yazar@mail.com</p>
+    </section>
+</main>
+
+
