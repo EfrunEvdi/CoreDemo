@@ -1020,3 +1020,168 @@ Bu derste areanın tanımında ve açma işleminde bahsedildi. UI katmanına Are
 
 # 90 Ders (Areas Map Controller Route)
 Bu derste Admin areasının içine CategoryController ekleyip view ekledik. Ardından bu viewin çalışmadığını gördük çünkü scaffolding dosyası ile gelen areanın bu dosya içindeki kodu startupta UseEndpoints içine yazmamız gerekiyor. Ardından sayfa çalıştı. Controller'a [Area("Admin")] yazmayı unutmuyoruz.
+
+# 91 Ders (Admin Panelinde Kategorilerin Listelenmesi)
+Bu derste Admin aresına Categoryleri tablo yapısı ile çektik.
+
+# 92 Ders (Pagination)
+Bu derste öncelikle UI katmanına aşağıdaki paketleri yüklüyoruz.
+-> X.PagedList (8.1.0)
+-> X.PagedList.Mvc.Core (8.1.0)
+
+devamında Category controller'ı
+
+using BusinessLayer.Concrete;
+using DataAccessLayer.EntityFramework;
+using Microsoft.AspNetCore.Mvc;
+using X.PagedList;
+
+namespace CoreDemo.Areas.Admin.Controllers
+{
+    [Area("Admin")]
+    [Route("Admin/[Controller]/[Action]/{id?}")]
+    public class CategoryController : Controller
+    {
+        CategoryManager cm = new CategoryManager(new EfCategoryRepository());
+        public IActionResult Index(int page = 1)
+        {
+            var values = cm.GetList().ToPagedList(page, 3);
+            return View(values);
+        }
+    }
+}
+
+şeklinde düzenliyoruz ve Index tarafınıda
+
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<EntityLayer.Concrete.Category>
+
+<br />
+@Html.PagedListPager((IPagedList)Model, page=>Url.Action("Index", new{ page }))
+
+şeklinde düzenleyince artık istediğimiz sayıda veriyi tabloda gösterebiliyoruz.
+
+# 93 Ders (Admin Panelinde Yeni Kategori Ekleme)
+Bu derste AddCategory için HttpGet ve Post işlemleri  ve CategoryValidator'u yazdık ardından form yapısı oluşturup eklemeişlemini tamamladıktan sonra dersi bitirdik.
+
+# 94 Ders (Confirm Delete)
+Bu derste DeleteCategory adlı controllerı yazdıktan sonra view tarafında
+
+<td><a href="/Admin/Category/DeleteCategory/@item.CategoryID" id="DeleteBtn" onclick="return confirm('Silmek istediğinize emin misiniz?')"><i class="fa fa-times text-danger"></i></a></td>
+
+ile onaylattırıyoruz.
+
+# 95 Ders (Excel Export 1)
+Bu derse 
+
+-> ClosedXML (0.95.4) paketini kurarak başlıyoruz.
+
+Devamında BlogController ve BlogModel'i açıp
+
+public IActionResult ExportStaticExcelBlogList()
+        {
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Blog Listesi");
+                worksheet.Cell(1, 1).Value = "Blog ID";
+                worksheet.Cell(1, 2).Value = "Blog Adı";
+
+                int blogRowCount = 2;
+                foreach (var item in GetBlogList())
+                {
+                    worksheet.Cell(blogRowCount, 1).Value = item.ID;
+                    worksheet.Cell(blogRowCount, 2).Value = item.BlogName;
+                    blogRowCount++;
+                }
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content=stream.ToArray();
+                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Calisma1.xlsx");
+                }
+            }
+        }
+        public List<BlogModel> GetBlogList()
+        {
+            List<BlogModel> bm = new List<BlogModel>
+            {
+                new BlogModel {ID=1,BlogName="C# Programlamaya Giriş"},
+                new BlogModel {ID=2,BlogName="Tesla Firmasının Araçlar"},
+                new BlogModel {ID=3,BlogName="2023 Olimpiyatları"}
+            };
+            return bm;
+        }
+
+yazarak dersi bitirdik.
+
+# 96 Ders (Excel Export 2)
+Bu derste ilk olarak blogController tarafına
+
+public IActionResult BlogListExcel()
+        {
+            return View();
+        }
+
+        yazıp index ekliyoruz ve
+
+<a href="/Admin/Blog/ExportStaticExcelBlogList" class="btn btn-primary">Excel Listesini İndir</a>
+
+kodu ile excel listesinin indiğini görüyoruz.
+
+# 97 Ders (Excel Dinamik Tablo Export)
+Bu derste ilk olarak BlogController'da
+
+ public IActionResult ExportDinamicExcelBlogList()
+        {
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Blog Listesi");
+                worksheet.Cell(1, 1).Value = "Blog ID";
+                worksheet.Cell(1, 2).Value = "Blog Adı";
+
+                int blogRowCount = 2;
+                foreach (var item in BlogTitleList())
+                {
+                    worksheet.Cell(blogRowCount, 1).Value = item.ID;
+                    worksheet.Cell(blogRowCount, 2).Value = item.BlogName;
+                    blogRowCount++;
+                }
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Calisma1.xlsx");
+                }
+            }
+        }
+
+        public List<BlogModel2> BlogTitleList()
+        {
+            List<BlogModel2> bm = new List<BlogModel2>();
+            using (var c = new Context())
+            {
+                bm = c.Blogs.Select(x => new BlogModel2
+                {
+                    ID = x.BlogID,
+                    BlogName = x.BlogTitle
+                }).ToList();
+            }
+            return bm;
+        }
+
+        public IActionResult BlogTitleListExcel()
+        {
+            return View();
+        }
+
+güncellemesi yapıp view ekledik. Ardıdan bu viewde bi önceki yapı ile excel'in indiğini gördük.
+
+# 98 Ders (Kampı Widgets)
+Bu derste olarak WidgetController açıp templateden alıp gerekli kısmı viewine kouyoruz devamında scriptler için AdminLayouta bir patal oluşturup eşitledim.
+
+# 99 Ders (İstatistik 1)
+Bu derste Admin Areası Componentleme işlemi için gerekli klasörleri oluşturduktan sonra Statistic1 için componentleme işlemini gerçekleştirip Viewbagler ile verileri çektik.
+
+# 100 Ders (İstatistik 2)
+Bu derste bir önceki ders gibi Statistic2 den devam ettik.
