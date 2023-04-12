@@ -1231,3 +1231,191 @@ Bu derste il olarak CategoryClass modelini daha sonra ChartController'ı Admin a
 ChartController'ı bu kodu yazdıktan sonra View ekleyip dersi bitiriyoruz.
 
 # 105 Ders (Google Chart 2)
+Bu derste ilk olarak CategoryClass modelini ardından ChartController'ı Admin aresına ekleyip daha sonra
+
+public IActionResult CategoryChart()
+        {
+            List<CategoryClass> list = new List<CategoryClass>();
+
+            list.Add(new CategoryClass
+            {
+                categoryname = "Teknoloji",
+                categorycount = 10
+            });
+
+            list.Add(new CategoryClass
+            {
+                categoryname = "Yazılım",
+                categorycount = 14
+            });
+
+            list.Add(new CategoryClass
+            {
+                categoryname = "Spor",
+                categorycount = 5
+            });
+
+            list.Add(new CategoryClass
+            {
+                categoryname = "Sinema",
+                categorycount = 2
+            });
+
+            return Json(new { jsonlist = list });
+        }
+
+kodlarını yazıp ardından index ekliyoruz. Devamından
+
+<div class="row">
+    <div class="col-lg-12">
+        <div id="chartdiv" style="width:800px; height:600px">
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(DrawonLoad);
+    function DrawonLoad() {
+        $(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/Admin/Chart/CategoryChart/',
+                success: function (chartsdata) {
+                    var Data = chartsdata.jsonlist;
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'categoryname');
+                    data.addColumn('number', 'categorycount');
+                    for (var i = 0; i < Data.length; i++) {
+                        data.addRow([Data[i].categoryname, Data[i].categorycount]);
+                    }
+                    var chart = new google.visualization.PieChart(document.getElementById('chartdiv'));
+                    chart.draw(data, {
+                        title: "Google Chart Core Projesi",
+                        position: "top",
+                        fontsize: "16px"
+                    });
+                }
+            });
+        });
+    }
+</script>
+
+indexi de bu şekilde yazdıktan sonra chart dinamik olarak geliyor.
+
+# 106 Ders (Ajax ile Verilerin Consoleda Listelenmesi)
+Bu derste ilk olarak WriterClass modelini ardından Writer controller'ı ajax işlemi için Admin areasına dahil ediyoruz. Ardından Writer controller'da statik olarak bir kaç kişi ekledikten sonra _adminlayoutta
+
+@await RenderSectionAsync("scripts")
+
+vw bu kontrollera ait index'te
+
+@section scripts{
+    <script>
+        $("#btngetlist").click(function () {
+            $.ajax({
+                contentType: "application/json",
+                dataType: "json",
+                type: "Get",
+                url: "/Admin/Writer/WriterList",
+                success: function (func) {
+                    console.log(func);
+                }
+            });
+        });
+    </script>
+}
+
+değişikliklerini yaptıktan sonra console'da verilerin geldiğini gördük.
+
+# 107 Ders (Ajax İle Verilerin Tabloya Çekilmesi)
+Bu derste bir önceki dersteki section'u
+@section scripts{
+    <script>
+        $("#btngetlist").click(function () {
+            $.ajax({
+                contentType: "application/json",
+                dataType: "json",
+                type: "Get",
+                url: "/Admin/Writer/WriterList/",
+                success: function (func) {
+                    let w=jQuery.parseJSON(func);
+                    console.log(w);
+
+                    let tablehtml = "<table class='table table-bordered'> <tr> <th> Yazar ID </th> <th> Yazar Bilgileri </th> </tr>";
+                    $.each(w, (index, value) => {
+                        tablehtml += `<tr><td>${value.ID}</td> <td>${value.Name}</td></tr>`;
+                    });
+                    tablehtml += "</table>";
+                    $("#writerlist").html(tablehtml);
+                }
+            });
+        });
+    </script>
+}
+
+olarak güncelleyerek tablo yapısını kurduk.
+
+# 108 Ders (Ajax Parametre Olarak Gönderilen Değerin Consoleda Listelenmesi)
+Bu derste WriterController'da
+
+ public IActionResult GetWriterByID(int writerid)
+        {
+            var findwriter = writers.FirstOrDefault(x => x.ID == writerid);
+            var jsonWriters = JsonConvert.SerializeObject(findwriter);
+            return Json(jsonWriters);
+        }
+
+ve indexinde 
+
+ $("#btngetbyid").click(x => {
+            let id = $("#writerid").val();
+            console.log(id);
+  });
+
+yazarak console girdiğimiz sayıyı yazdırdık.
+
+# 109 Ders (Ajax İle Id'ye Göre Veri Getirme)
+Bu derste script kısmını
+
+ $("#btngetbyid").click(x => {
+            let id = $("#writerid").val();
+            $.ajax({
+                contentType: "application/json",
+                dataType: "json",
+                type: "Get",
+                url: "/Admin/Writer/GetWriterByID/",
+                data: { writerid: id },
+                success: function (func) {
+                    let w=jQuery.parseJSON(func);
+                    console.log(w);
+                }
+            });
+        });
+
+olarak güncelleyerekconsole istedğimiz kişiyi çağırdık.
+
+# 110 (Ajax ile ID'ye Göre Gelen Veriyi Tabloya Yazma)
+Bu derste index tarafında
+$("#btngetbyid").click(x => {
+            let id = $("#writerid").val();
+            $.ajax({
+                contentType: "application/json",
+                dataType: "json",
+                type: "Get",
+                url: "/Admin/Writer/GetWriterByID/",
+                data: { writerid: id },
+                success: function (func) {
+                    let w = jQuery.parseJSON(func);
+                    console.log(w);
+
+                    let getvalue = `<table class = table table-bordered> <tr> <th> Yazar ID </th> <th> Yazar Bilgisi </th> </tr> <tr> <td> ${w.ID} </td> <td> ${w.Name} </td> </tr> </table>`;
+                    $("#writerget").html(getvalue);
+                }
+            });
+        });
+
+ile tablo yapısı ve id ile yazarı getirdik.
