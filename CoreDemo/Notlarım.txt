@@ -1185,3 +1185,49 @@ Bu derste Admin Areası Componentleme işlemi için gerekli klasörleri oluştur
 
 # 100 Ders (İstatistik 2)
 Bu derste bir önceki ders gibi Statistic2 den devam ettik.
+
+# 101 Ders (Admin Tablosu)
+Bu derste Statistic4 için componentleme yapısı kurarken aynı zamanda Admin entitysini projeye dahil ediyoruz.
+
+# 102 Ders (İstatistik 3)
+Bu derste bir önceki derste oluşturmuş olduğumuz admin sayfası için Dal ve businessta gerekli eklemeleri yapıpm Statistic4 için istediğimiz veriyi çektik.
+
+# 103 Ders (Api Üzerinden Hava Durumu Bilgisi Çekme)
+https://openweathermap.org/api sitesine üye oluyoruz. Bu siteden gelen Api key'i Statistic1 içine yazarak apiyi çağırıyoruz.
+
+string api = "0be77b477064af1c5eb2da55c4cc3b84";
+            string connection = "https://api.openweathermap.org/data/2.5/weather?q=istanbul&mode=xml&lang=tr&units=metric&appid=" + api;
+            XDocument document = XDocument.Load(connection);
+            ViewBag.v4 = document.Descendants("temperature").ElementAt(0).Attribute("value").Value;
+
+# 104 Ders (Google Chart 1)
+Bu derste il olarak CategoryClass modelini daha sonra ChartController'ı Admin areasına dahil ediyoruz. Devamında
+
+ public IActionResult CategoryChart()
+        {
+            List<CategoryClass> list = new List<CategoryClass>();
+
+            list.Add(new CategoryClass
+            {
+                CategoryName = "Teknoloji",
+                CategoryCount = 10
+            });
+
+            list.Add(new CategoryClass
+            {
+                CategoryName = "Yazılım",
+                CategoryCount = 14
+            });
+
+            list.Add(new CategoryClass
+            {
+                CategoryName = "Spor",
+                CategoryCount = 5
+            });
+
+            return Json(new { jsonlist = list });
+        }
+
+ChartController'ı bu kodu yazdıktan sonra View ekleyip dersi bitiriyoruz.
+
+# 105 Ders (Google Chart 2)
