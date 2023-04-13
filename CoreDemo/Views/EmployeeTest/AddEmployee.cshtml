@@ -1,0 +1,53 @@
+﻿@using static CoreDemo.Controllers.EmployeeTestController;
+@model Class1
+
+@{
+    ViewData["Title"] = "AddEmployee";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Yeni Çalışan Ekleme Sayfası</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/Admin/Dashboard/Index">Ana Safya</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a>Kategoriler</a>
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>Yeni Çalışan Ekleme Sayfası</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>Yeni Çalışan Ekleme Sayfası <small>Lütfen tüm alanları doldurun.</small></h5>
+                </div>
+                <div class="ibox-content">
+                    <form method="post">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Kişi Bilgileri</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" asp-for="Name" class="form-control" placeholder="Kişi bilgilerini giriniz.">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+
+                        <button type="submit" class="btn btn-primary col-12">Kişiyi Oluştur!</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

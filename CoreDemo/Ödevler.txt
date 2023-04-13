@@ -145,3 +145,4 @@ RenderSection ise Layout sayfasının istediğimiz bir alanında veri göstermem
 
 Tam ayırtman özelliğini söylemek gerekirse RenderBody her sayfada kullanılıyorken RenderSection istediğimiz sayfalarda gösterebiliriz.
 
+120. Ders Veriyi apiye gönderirken serialize olarak göndeririz. Veriyi alırken deserialize yaparak alırız.

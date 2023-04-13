@@ -1398,7 +1398,7 @@ Bu derste script kısmını
 
 olarak güncelleyerekconsole istedğimiz kişiyi çağırdık.
 
-# 110 (Ajax ile ID'ye Göre Gelen Veriyi Tabloya Yazma)
+# 110 Ders (Ajax ile ID'ye Göre Gelen Veriyi Tabloya Yazma)
 Bu derste index tarafında
 $("#btngetbyid").click(x => {
             let id = $("#writerid").val();
@@ -1419,3 +1419,246 @@ $("#btngetbyid").click(x => {
         });
 
 ile tablo yapısı ve id ile yazarı getirdik.
+
+# 111 Ders (Ajax İle Ekleme)
+Bu derste WriterController de AddWriter controllerını yazarak index tarafında da
+
+        $("#btnaddwriter").click(function () {
+            let writer = {
+                ID: $("#txtwriterid").val(),
+                Name: $("#txtwritername").val()
+            };
+
+            $.ajax({
+                type: "post",
+                url: "/Admin/Writer/AddWriter/",
+                data: writer,
+                success: function (func) {
+                    let result = jQuery.parseJSON(func);
+                    alert("Yazar ekleme işlemi başarılı bir şekilde gerçekleşti.");
+                }
+            });
+        });
+
+işlemi ile başarılı bir şekilde ekleme işlemini tamamladık.
+
+# 112 Ders (Ajax İle Silme)
+Bu derste WriterController de DeleteWriter controllerını yazarak index tarafında da
+
+        $("#btndeletewriter").click(x => {
+            let id = $("#txtid").val();
+
+            $.ajax({
+                url: "/Admin/Writer/DeleteWriter/" + id,
+                type: "post",
+                dataType: "json",
+                success: function (func) {
+                    alert("Yazar silme işlemi başarılı bir şekilde gerçekleşti.");
+                }
+            });
+        });
+
+işlemi ile başarılı bir şekilde ekleme işlemini tamamladık.
+
+# 113 Ders (Ajax ile Update)
+Bu derste WriterController de UpdateWriter controllerını yazarak index tarafında da
+
+       $("#btnupdatewriter").click(function () {
+            let writer = {
+                ID: $("#txtid1").val(),
+                Name: $("#writername1").val()
+            };
+
+            $.ajax({
+                type: "post",
+                url: "/Admin/Writer/UpdateWriter/",
+                data: writer,
+                success: function (func) {
+                    alert("Güncelleme yapıldı.");
+                }
+            });
+        });
+
+işlemi ile başarılı bir şekilde ekleme işlemini tamamladık.
+
+# 114 Ders (Apilere Giriş)
+Bu derste solition'a sağ tık add new project diyip ASP.NET WEB API seçiyoruz ve ekliyoruz. Ardından BlogApiDemo adlı bu katmana DataAccessLayer klasörü içine de Context ve Employee classlarını dahil edip katmana
+
+-> Microsoft.EntityFrameworkCore (5.0.13)
+-> Microsoft.EntityFrameworkCore.Design (5.0.13)
+-> Microsoft.EntityFrameworkCore.SqlServer (5.0.13)
+-> Microsoft.EntityFrameworkCore.Tools (5.0.13)
+
+paketlerini yüklüyoruz. Daha sonra Contexti doldurum migration yaparak dersi bitiriyoruz.
+
+# 115 Ders (Swagger Ve Api Get List)
+Bu dersre o BlogApiDemo da oluşturduğumuz DefaultController'a(Api Controller) 
+
+[HttpGet]
+        public IActionResult EmployeeList()
+        {
+            using var c = new Context();
+            var values = c.Employees.ToList();
+
+            return Ok(values);
+        }
+
+yazdıktan sonra ctrl f5 ile çalıştırdık ve Get -> Try it out -> Execute dedikten sonra verilerin listelendiğini gördük. Devamında Curl daki url yi açtığımızda verilerin json olarak geldiğini gördük.
+
+# 116 Ders (Postman İle İstek Gönderme)
+Postmani açıp https://localhost:44346/api/Default yazıp Send diyoruz. Verilerin listelendiğini görüyoruz.
+
+[HttpPost]
+        public IActionResult EmployeeAdd()
+        {
+            return Ok();
+        }
+
+ile Post etiketininde geldiğini görüyoruz.
+
+# 117 Ders (Api ile Veri Ekleme)
+Bu derste DefaultController'ı
+
+[HttpPost]
+        public IActionResult EmployeeAdd(Employee employee)
+        {
+            using var c = new Context();
+            c.Add(employee);
+            c.SaveChanges();
+
+            return Ok();
+        }
+
+şeklinde güncelledikten sonra Post kısmında ekleme yapabildik.
+
+Daha sonra postman tarafında adresimini yazdıktan sonra Post işlemini seçip raw -> JSON seçip
+
+{
+   "name":"Eylül Çınar"
+}
+
+dedikten sonra Send diyoruz ve get diyip send dediğimizde eklendiğini aynı zamanda SQL'e de eklendiğini görüyoruz.
+
+# 118 Ders (Apiler İle Veri Getirme)
+Bu derste ID ye göre getirme işlemi için
+
+[HttpGet("{id}")]
+        public IActionResult EmployeeGet(int id)
+        {
+            using var c = new Context();
+            var employee = c.Employees.Find(id);
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            else
+            {
+                return Ok(employee);
+            }
+
+        }
+
+controller'ını yazıyoruz ve ID'ye göre geldiğini görüyoruz.
+
+Postman tarafında da https://localhost:44346/api/Default/2 ile ID'ye göre geliyor.
+
+# 119 Ders (Apilerle Silme Ve Güncelleme)
+Controller tarafında
+
+[HttpDelete("{id}")]
+        public IActionResult EmployeeDelete(int id)
+        {
+            using var c = new Context();
+            var employee = c.Employees.Find(id);
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            else
+            {
+                c.Remove(employee);
+                c.SaveChanges();
+                return Ok();
+            }
+       
+yazarak ID'ye göre silme işlemini yaptık.
+Postman tarafında da aynı ID'ye göre getirme gibi yapıp Delete seçiyoruz.
+
+ [HttpPut]
+        public IActionResult EmployeeUpdate(Employee employee)
+        {
+            using var c = new Context();
+            var emp = c.Employees.Find(employee.ID);
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            else
+            {
+                emp.Name = employee.Name;
+                c.Update(emp);
+                c.SaveChanges();
+
+                return Ok();
+            }
+        }
+
+ile ID'ye göre güncelleme işlemini sağladık.
+
+Postman tarfında da
+
+{
+     "id":"3",
+    "name":"Gamze"
+}
+ile Put seçerek güncellettirdik.
+
+# 120 Ders (Apilerle Projenin Haberleştirilmesi Proje Üzerinden List & Add)
+Bu derste ilk olarak CoreDemo katmanına EmployeeTest controllerını ekliyoruz ve CoreDome katmanına BlogApiDemo katmanını referans olarak ekliyoruz. Devamında controler'ı
+
+public async Task<IActionResult> Index()
+        {
+            var httpClient = new HttpClient();
+            var responseMessage = await httpClient.GetAsync("https://localhost:44346/api/Default");
+            var jsonString = await responseMessage.Content.ReadAsStringAsync();
+            var values = JsonConvert.DeserializeObject<List<Class1>>(jsonString);
+            return View(values);
+        }
+
+public class Class1
+        {
+            public int ID { get; set; }
+            public string Name { get; set; }
+        }
+
+olarak güncelleyip eklediğimiz index'e tablo yapısı kurarak verileri api katamından listeliyoruz. Devamında çalışan ekleyebilmek için
+
+[HttpGet]
+        public IActionResult AddEmployee()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddEmployee(Class1 p)
+        {
+            var httpClient = new HttpClient();
+            var jsonEmployee = JsonConvert.SerializeObject(p);
+            StringContent content = new StringContent(jsonEmployee, Encoding.UTF8, "application/json");
+            var responseMessage = await httpClient.PostAsync("https://localhost:44346/api/Default", content);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index", "EmployeeTest");
+            }
+
+            return View(p);
+        }
+
+olarak yazıp bu controllerın indexine form yapısı kurarak kişi eklemeyi sağladık.
