@@ -68,5 +68,10 @@ namespace BusinessLayer.Concrete
         {
             _blogDal.Delete(t);
         }
+
+        public List<Blog> GetBlogsWithWriters()
+        {
+            return _blogDal.GetBlogsWithWriters();
+        }
     }
 }

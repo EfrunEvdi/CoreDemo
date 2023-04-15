@@ -145,4 +145,17 @@ RenderSection ise Layout sayfasının istediğimiz bir alanında veri göstermem
 
 Tam ayırtman özelliğini söylemek gerekirse RenderBody her sayfada kullanılıyorken RenderSection istediğimiz sayfalarda gösterebiliriz.
 
-120. Ders Veriyi apiye gönderirken serialize olarak göndeririz. Veriyi alırken deserialize yaparak alırız.
+120. Video: Veriyi apiye gönderirken serialize olarak göndeririz. Veriyi alırken deserialize yaparak alırız.
+
+124. Video Kullanım şartlarını okudum. seçiliyse giriş yapsın.
+Öncelikle modele public bool IsAcceptTheContract { get; set; } prop'unu ekledim.
+Sonra controller'in içine şu koşulu ekledim.
+if (!signUpViewModel.IsAcceptTheContract)
+            {
+                ModelState.AddModelError("IsAcceptTheContract",
+                    "Sayfamıza kayıt olabilmek için gizlilik sözleşmesini kabul etmeniz gerekmektedir.");
+                return View(signUpViewModel);
+            }
+View kısmındada bu prop'a karşılık gelecek checkbox'a asp-for ile atama yaptım.
+<div class="checkbox i-checks"><label> <input type="checkbox" asp-for="IsAcceptTheContract"><i></i>
+Kullanım şartlarını okudum kabul ediyorum. Kabul ediyorum </label></div>

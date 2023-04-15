@@ -1,13 +1,42 @@
 ﻿<div class="col-md-4 top-forms text-center mt-lg-3 mt-md-1 mt-0">
-    <span>Hoşgeldiniz!</span>
-    <span class="mx-lg-4 mx-md-2  mx-1">
-        <a href="/Login/SignIn/">
-            <i class="fas fa-lock"></i> Giriş Yap!
-        </a>
-    </span>
-    <span>
-        <a href="/Login/SingUp/">
-            <i class="far fa-user"></i> Kayıt Ol!
-        </a>
-    </span>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="row">
+            <span>Hoşgeldiniz!</span>
+
+            <span class="mx-lg-4 mx-md-2  mx-1">
+                <a href="/Dashboard/Index/">
+                    <i class="fa fa-user"></i> Yazar Paneli
+                </a>
+            </span>
+
+            <span>
+                <a href="/Admin/Chart/Index/">
+                    <i class="fa fa-user-secret"></i> Admin Paneli
+                </a>
+            </span>
+
+            @*<span>
+        <form method="post" action="/Login/Logout">
+        <button type="submit" class="">Logout</button>
+        </form>
+        </span>*@
+        </div>
+    }
+
+    else
+    {
+        <span>Hoşgeldiniz!</span>
+        <span class="mx-lg-4 mx-md-2  mx-1">
+            <a href="/Login/SignIn/">
+                <i class="fa fa-toggle-on"></i> Giriş Yap!
+            </a>
+        </span>
+        <span>
+            <a href="/Login/SignUp/">
+                <i class="fa fa-address-card"></i> Kayıt Ol!
+            </a>
+        </span>
+    }
 </div>

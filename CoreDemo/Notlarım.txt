@@ -1662,3 +1662,182 @@ olarak güncelleyip eklediğimiz index'e tablo yapısı kurarak verileri api kat
         }
 
 olarak yazıp bu controllerın indexine form yapısı kurarak kişi eklemeyi sağladık.
+
+# 121 Ders (Apilerle Projenin Haberleştirilmesi Proje Üzerinden Edit & Delete)
+Bu derste EmployeeTestControllerda önce güncelleme için
+
+
+        [HttpGet]
+        public async Task<IActionResult> EditEmployee(int id)
+        {
+            var httpClient = new HttpClient();
+            var responseMessage = await httpClient.GetAsync("https://localhost:44346/api/Default/" + id);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var jsonEmployee = await responseMessage.Content.ReadAsStringAsync();
+                var values = JsonConvert.DeserializeObject<Class1>(jsonEmployee);
+                return View(values);
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditEmployee(Class1 p)
+        {
+            var httpClient = new HttpClient();
+            var jsonEmployee = JsonConvert.SerializeObject(p);
+            var content = new StringContent(jsonEmployee, Encoding.UTF8, "application/json");
+            var responseMessage = await httpClient.PutAsync("https://localhost:44346/api/Default", content);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(p);
+        }
+
+kodunu yaxdık ve index ekledik form yapısı ve ID yi gizli tutarak işlemi tamamladık.
+
+Ardından
+
+public async Task<IActionResult> DeleteEmployee(int id)
+        {
+            var httpClient = new HttpClient();
+            var responseMessage = await httpClient.DeleteAsync("https://localhost:44346/api/Default/" + id);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
+ile silme işlemini tamamlayarak dersi bitirdik.
+
+# 122 Ders (Identity Kütüphanesi)
+Bu derte UI ve DataAccess katmanlarına
+-> Microsoft.AspNetCore.Identity (2.2.0)
+-> Microsoft.AspNetCore.Identity.EntityFramework (5.0.13) DAL -> (5.0.9)
+
+IdentityDbContext => Context sınıfından miras alır ve Context sınıfına ait bütün özellikleri kullanır.
+
+Daha sonra Context sınıfında
+
+public class Context : IdentityDbContext
+base.OnModelCreating(modelBuilder);
+
+güncellemesini yaptıktan sonra migration yapıyoruz. Ardından IDentity tablolarının geldiğini görüyoruz.
+
+Devamında aynı paketleri entity katmanına kurduk ve AppUser classını Entity katmanına dahil ettik. Bu classı Identity e bağlamak için  : IdentityUser<int> kodunu ve Context'te Context : IdentityDbContext <AppUser> olarak güncelledik ve ardından migration yaparak dersi bitirdik.
+
+# 123 Ders (Identity ile Register İşlemi)
+Bu derste ilk olarak AppUser ve IdentityDbContext i sildik ve eski haline getirdik ardından AppUser ve AppRole classlarını iEntity'e dahil edip Context 'te  public class Context : IdentityDbContext<AppUser, AppRole, int> değişikliğini yapıp migration yaptık.
+
+Daha sonra UI katmanındaModel klasörüne UserSignUpViewModel ekleyerek
+
+[Display(Name = "İsim Soyisim")]
+        [Required(ErrorMessage = "Lütfen isminizi ve soyisminizi giriniz.")]
+        public string NameSurname { get; set; }
+
+        [Display(Name = "Kullanıcı Adı")]
+        [Required(ErrorMessage = "Lütfen kullanıcı adınızı giriniz.")]
+        public string UserName { get; set; }
+
+        [Display(Name = "Şifre")]
+        [Required(ErrorMessage = "Lütfen şifrenizi giriniz.")]
+        public string Password { get; set; }
+
+        [Display(Name = "Şifre Tekrarı")]
+        [Compare("Password", ErrorMessage = "Şifreleriniz uyuşmuyor.")]
+        public string ConfirimPassword { get; set; }
+
+        [Display(Name = "E-Posta")]
+        [Required(ErrorMessage = "Lütfen e-posta adresinizi giriniz.")]
+        public string Mail { get; set; }
+
+propertylerini tanımlıyoruz. Devamından RegisterUserController'ı ekleyip
+
+private readonly UserManager<AppUser> _userManager;
+
+        public RegisterUserController(UserManager<AppUser> userManager)
+        {
+            _userManager = userManager;
+        }
+
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(UserSignUpViewModel p)
+        {
+            if (ModelState.IsValid)
+            {
+                AppUser user = new AppUser()
+                {
+                    Email = p.Mail,
+                    UserName = p.UserName,
+                    NameSurname = p.NameSurname,
+                };
+
+                var result = await _userManager.CreateAsync(user, p.Password);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("SignIn", "Login");
+                }
+
+                else
+                {
+                    foreach (var item in result.Errors)
+                    {
+                        ModelState.AddModelError("", item.Description);
+                    }
+                }
+            }
+            return View(p);
+        }
+
+şeklinde yazıyoruz.
+
+Ardından bu controller'a ait index i çalıştırdığımızda çalışmadığı için start'up ;
+
+services.AddDbContext<Context>();
+
+services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
+
+kodlarını yazıyoruz ve çalıştığını görüyoruz daha sonra admin templatesinden register kısmını alıp kendi indeximize koyup dersi bitiriyoruz.
+
+# 124 Ders (Register İşleminin Tamamlanması ve Identity Konfigürasyonları)
+Bu derste Register/Index'i düzenleyip alanları ekliyoruz. Hata mesajları için span etiketlerini ekliyoruz.
+
+<div asp-validation-summary="ModelOnly"></div> bu kod ile default password ayarlarını gösterir. Bu zorunlulukları kaldırmak için startupta
+
+services.AddIdentity<AppUser, AppRole>(x =>
+            {
+                x.Password.RequireUppercase = false;
+                x.Password.RequireNonAlphanumeric = false;
+            })
+            .AddEntityFrameworkStores<Context>();
+
+işlemini yapıyoruz.
+
+# 125 Ders (Identity ile Login İşlemi)
+Bu derste RegisterUserController 'ı iptal edip Logine hem SignUp'ı hemde SignIn'ı yapıp çalşımasını sağladık. SignIn için UserSignInViewModel'i ekleyip çalışmasını sağladık.
+
+# 126 Ders (Identity İle Giriş Yapan Kullanıcının Bilgilerini Getirme)
+Bu derste Dashboard/Indexte giriş yapmış kullanıcıların bilgilerini getirebilmek için WriterAboutOnDashboard ve Default'unda değişiklikler yaptık.
+
+var username = User.Identity.Name;
+
+var usermail = context.Users.Where(x => x.UserName == username).Select(x => x.Email).FirstOrDefault();
+
+var writerID = context.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterID).FirstOrDefault();
+
+önemli kısımlar.
+
+# 127 Ders (Ajax ile Mail Bülteni Subscribe (Partial View Ajax With Post)

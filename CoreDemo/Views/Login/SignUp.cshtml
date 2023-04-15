@@ -1,4 +1,4 @@
-﻿@model EntityLayer.Concrete.Writer
+﻿@model UserSignUpViewModel
 
 @{
     ViewData["Title"] = "SignUp";
@@ -8,6 +8,7 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/jquery/dist/jquery.js"></script>
+
 <!--/banner-->
 <div class="banner-inner">
 </div>
@@ -29,36 +30,30 @@
                     <div class="form-row">
                         <div class="col-md-6 mb-3">
                             <label for="validationCustom01">İsim Soyisim : </label>
-
-                            @* <input type="text" class="form-control" id="validationDefault01" name="WriterName" placeholder="">*@
-                            @Html.TextBoxFor(x=>x.WriterName, new{@class="form-control"})
-                            @Html.ValidationMessageFor(x=>x.WriterName,"",new {@class="text-danger"} )
+                            <input type="text" class="form-control" asp-for="NameSurname" placeholder="İsim Soyisim" required="">
+                            <span asp-validation-for="NameSurname" class="text-danger"></span>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="validationCustom02">E-Posta : </label>
-                            @*<input type="email" class="form-control" id="validationDefault02" name="WriterMail" placeholder="">*@
-                            @Html.TextBoxFor(x=>x.WriterMail, new{@class="form-control"})
-                            @Html.ValidationMessageFor(x=>x.WriterMail,"",new {@class="text-danger"})
+                            <label for="validationCustom02">Kullanıcı Adı : </label>
+                            <input type="text" class="form-control" asp-for="UserName" placeholder="Kullanıcı Adı" required="">
+                            <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="exampleInputPassword1 mb-2">Şifre : </label>
-                            @*<input type="password" class="form-control" id="password1" name="WriterPassword" placeholder="">*@
-                            @Html.TextBoxFor(x=>x.WriterPassword, new{@class="form-control"})
-                            @Html.ValidationMessageFor(x=>x.WriterPassword,"",new {@class="text-danger"})
+                            <input type="password" class="form-control" asp-for="Password" placeholder="Şifre" required="">
+                            <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="exampleInputPassword2 mb-2">Şifre Tekrarı : </label>
-                            @*<input type="password" class="form-control" id="password2" name="WriterConfirmPassword" placeholder="">*@
-                            @Html.TextBoxFor(x=>x.WriterConfirmPassword, new{@class="form-control"})
-                            @Html.ValidationMessageFor(x=>x.WriterConfirmPassword,"",new {@class="text-danger"})
+                            <input type="password" class="form-control" asp-for="ConfirimPassword" placeholder="Şifre Tekrarı" required="">
+                            <span asp-validation-for="ConfirimPassword" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-12">
-                            <label for="exampleInputPassword2 mb-2">Profil Resmi : </label>
-                            @*<input type="text" class="form-control" id="image" name="WriterImage" placeholder="">*@
-                            @Html.TextBoxFor(x=>x.WriterImage, new{@class="form-control"})
-                            @Html.ValidationMessageFor(x=>x.WriterImage,"",new {@class="text-danger"})
+                            <label for="exampleInputPassword2 mb-2">E-Posta : </label>
+                            <input type="email" class="form-control" asp-for="Mail" placeholder="E-Posta Adresi" required="">
+                            <span asp-validation-for="Mail" class="text-danger"></span>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary submit mb-4">Kayıt Ol!</button>

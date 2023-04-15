@@ -1,12 +1,15 @@
 ﻿using BusinessLayer.Concrete;
 using BusinessLayer.ValidationRules;
+using CoreDemo.Models;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
+using DocumentFormat.OpenXml.Bibliography;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +21,15 @@ namespace CoreDemo.Controllers
     [AllowAnonymous]
     public class LoginController : Controller
     {
-        WriterManager wm = new WriterManager(new EfWriterRepository());
+        private readonly UserManager<AppUser> _userManager;
+
+        private readonly SignInManager<AppUser> _signInManager;
+
+        public LoginController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+        }
 
         [HttpGet]
         public IActionResult SignUp()
@@ -27,30 +38,40 @@ namespace CoreDemo.Controllers
         }
 
         [HttpPost]
-        public IActionResult SignUp(Writer writer)
+        public async Task<IActionResult> SignUp(UserSignUpViewModel p)
         {
-            WriterValidator wv = new WriterValidator();
-            ValidationResult results = wv.Validate(writer);
-
-
-            if (results.IsValid)
+            if (ModelState.IsValid)
             {
-                writer.WriterStatus = true;
-                writer.WriterAbout = "Deneme";
-                if (writer.WriterPassword == writer.WriterConfirmPassword)
+                AppUser user = new AppUser()
                 {
-                    wm.TAdd(writer);
-                    return RedirectToAction("Index", "Blog");
+                    Email = p.Mail,
+                    UserName = p.UserName,
+                    NameSurname = p.NameSurname,
+                };
+
+                var result = await _userManager.CreateAsync(user, p.Password);
+
+                if (p.IsAcceptTheContract)
+                {
+                    ModelState.AddModelError("IsAcceptTheContract",
+                        "Sayfamıza kayıt olabilmek için gizlilik sözleşmesini kabul etmeniz gerekmektedir.");
+                    return View(p);
+                }
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("SignIn", "Login");
+                }
+
+                else
+                {
+                    foreach (var item in result.Errors)
+                    {
+                        ModelState.AddModelError("", item.Description);
+                    }
                 }
             }
-            else
-            {
-                foreach (var item in results.Errors)
-                {
-                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
-                }
-            }
-            return View();
+            return View(p);
         }
 
         [HttpGet]
@@ -60,29 +81,31 @@ namespace CoreDemo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignIn(Writer writer)
+        public async Task<IActionResult> SignIn(UserSignInViewModel p)
         {
-            Context context = new Context();
-            var datavalue = context.Writers.FirstOrDefault(x => x.WriterMail == writer.WriterMail && x.WriterPassword == writer.WriterPassword);
-
-            if (datavalue != null)
+            if (ModelState.IsValid)
             {
-                var claims = new List<Claim>
+                var result = await _signInManager.PasswordSignInAsync(p.UserName, p.Password, true, true);
+
+                if (result.Succeeded)
                 {
-                    new Claim(ClaimTypes.Name,writer.WriterMail)
-                };
+                    return RedirectToAction("Index", "Home");
+                }
 
-                var useridentity = new ClaimsIdentity(claims, "a");
-                ClaimsPrincipal principal = new ClaimsPrincipal(useridentity);
-                await HttpContext.SignInAsync(principal);
-                return RedirectToAction("Index", "Blog");
+                else
+                {
+                    return RedirectToAction("SignIn", "Login");
+                }
             }
-
-            else
-            {
-                return View();
-            }
+            return View();
         }
+
+        //[HttpPost]
+        //public async Task<IActionResult> Logout()
+        //{
+        //    await _signInManager.SignOutAsync();
+        //    return RedirectToAction("SignIn", "Login");
+        //}
     }
 }
 
@@ -93,6 +116,27 @@ namespace CoreDemo.Controllers
 //{
 //    HttpContext.Session.SetString("username", writer.WriterMail);
 //    return RedirectToAction("Index", "Writer");
+//}
+
+//else
+//{
+//    return View();
+//}
+
+
+//Context context = new Context();
+//var datavalue = context.Writers.FirstOrDefault(x => x.WriterMail == writer.WriterMail && x.WriterPassword == writer.WriterPassword);
+//if (datavalue != null)
+//{
+//    var claims = new List<Claim>
+//    {
+//                    new Claim(ClaimTypes.Name,writer.WriterMail)
+//                };
+
+//    var useridentity = new ClaimsIdentity(claims, "a");
+//    ClaimsPrincipal principal = new ClaimsPrincipal(useridentity);
+//    await HttpContext.SignInAsync(principal);
+//    return RedirectToAction("Index", "Blog");
 //}
 
 //else

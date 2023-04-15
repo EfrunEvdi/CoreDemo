@@ -1,0 +1,44 @@
+﻿@model List<Blog>
+
+<div class="col-lg-8 left-blog-info-w3layouts-agileits text-left">
+    <div class="blog-grid-top">
+        @foreach (var item in Model)
+        {
+            <div class="b-grid-top">
+                <div class="blog_info_left_grid">
+                    <a href="single.html">
+                        <img src="@item.BlogThumbnailImage" class="img-fluid" alt="">
+                    </a>
+                </div>
+                <div class="blog-info-middle">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <i class="far fa-calendar-alt"></i> @(((DateTime)item.BlogCreateDate).ToString("dd-MMM-yyyy"))
+                            </a>
+                        </li>
+                        <li class="mx-2">
+                            <a href="#">
+                                <i class="far fa-thumbs-up"></i> 201 Beğeni
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="far fa-comment"></i> @ViewBag.YS Yorum
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>
+                <a href="single.html">@item.BlogTitle </a>
+            </h3>
+            <p>
+                @item.BlogContent.Substring(0,item.BlogContent.Substring(0,300).LastIndexOf(" "))...
+            </p>
+            <a href="/Blog/BlogReadAll/@item.BlogID" class="btn btn-primary read-m">Devamını Oku!</a>
+        }
+        <!--//silder-->
+    </div>
+</div>

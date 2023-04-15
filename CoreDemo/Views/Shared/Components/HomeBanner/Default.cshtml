@@ -1,0 +1,28 @@
+﻿@model List<Blog>
+
+<section class="bottom-slider">
+    <div class="course_demo1">
+        <ul id="flexiselDemo1">
+            @foreach (var item in Model)
+            {
+                <li>
+                    <a href="/Blog/BlogReadAll/@item.BlogID">
+                        <div class="blog-item">
+                            <img src="@item.BlogImage" alt=" " class="img-fluid" />
+                            <div class="floods-text">
+                                <h3>
+                                    @item.BlogTitle
+                                    <span>
+                                        Yazar
+                                        <label>|</label>
+                                        <i>@item.Writer.WriterName</i>
+                                    </span>
+                                </h3>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</section>
