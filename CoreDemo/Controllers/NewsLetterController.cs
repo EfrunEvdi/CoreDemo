@@ -22,7 +22,7 @@ namespace CoreDemo.Controllers
         {
             newsLetter.MailStatus = true;
             nm.TAdd(newsLetter);
-            return RedirectToAction("Index", "Blog");
+            return PartialView();
         }
     }
 }

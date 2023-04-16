@@ -1,4 +1,4 @@
-﻿@model EntityLayer.Concrete.Writer
+﻿@model UserUpdateViewModel
 
 @{
     ViewData["Title"] = "WriterEditProfile";
@@ -11,50 +11,54 @@
             <div class="card-body">
                 <h4 class="card-title">Yazar Bilgileri Güncelleme Sayfası</h4>
                 <p></p>
-                <form method="post" class="forms-sample">
-                    <input type="hidden" asp-for="WriterID" />
-                    <input type="hidden" asp-for="WriterStatus" />
+                <form method="post" class="forms-sample" enctype="multipart/form-data">
 
-                    <div class="form-group">
-                        <label>Profil Resmi</label>
-                        <div class="input-group col-xs-12">
-                            <input type="text" class="form-control file-upload-info" asp-for="WriterImage" placeholder="Profil resminizi seçiniz.">
-                            <span class="input-group-append">
-                                <button class="file-upload-browse btn btn-gradient-primary" type="button">Yükle</button>
-                            </span>
+                    <div class="row py-1 mb-3">
+                        <div class="col-md-5">
+                            <img src="@Model.imageUrl" class="img-fluid" alt="Profil Resmi" />
                         </div>
-                        @Html.ValidationMessageFor(x=>x.WriterImage)
+                        <div class="col-md-3 mt-3">
+                            <div class="form-group">
+                                <label for="image" class="form-label">Profil Resmi</label>
+                                <div class="input-group">
+                                    <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label>İsim Soyisim</label>
-                        <input type="text" asp-for="WriterName" class="form-control" placeholder="İsim ve soyisminizi giriniz.">
-                        @Html.ValidationMessageFor(x=>x.WriterName)
+                        <input type="text" asp-for="nameSurname" class="form-control" placeholder="İsim ve soyisminizi giriniz.">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kullanıcı Adı</label>
+                        <input type="text" asp-for="userName" class="form-control" placeholder="Kullanıcı adınızı giriniz.">
                     </div>
 
                     <div class="form-group">
                         <label>E-Posta</label>
-                        <input type="mail" asp-for="WriterMail" class="form-control" placeholder="E-Posta adresinizi giriniz.">
-                        @Html.ValidationMessageFor(x=>x.WriterMail)
+                        <input type="mail" asp-for="mail" class="form-control" placeholder="E-Posta adresinizi giriniz.">
                     </div>
 
-                    <div class="form-group">
-                        <label>Şifre</label>
-                        <input type="text" class="form-control file-upload-info" asp-for="WriterPassword" placeholder="Yeni şifrenizi giriniz.">
-                        @Html.ValidationMessageFor(x=>x.WriterPassword)
-                    </div>
+                    @*<div class="form-group">
+                    <label>Şifre</label>
+                    <input type="password" class="form-control file-upload-info" asp-for="PasswordHash" placeholder="Yeni şifrenizi giriniz.">
+                    @Html.ValidationMessageFor(x=>x.PasswordHash)
+                    </div>*@
 
-                    <div class="form-group">
-                        <label>Şifre Tekrarı</label>
-                        <input type="text" class="form-control file-upload-info" asp-for="WriterConfirmPassword" placeholder="Yeni şifrenizin tekrarını giriniz.">
-                        @Html.ValidationMessageFor(x=>x.WriterPassword)
-                    </div>
+                    @*<div class="form-group">
+                    <label>Şifre Tekrarı</label>
+                    <input type="text" class="form-control file-upload-info" asp-for="WriterConfirmPassword" placeholder="Yeni şifrenizin tekrarını giriniz.">
+                    @Html.ValidationMessageFor(x=>x.WriterPassword)
+                    </div>*@
 
-                    <div class="form-group">
-                        <label>Yazar Hakkında</label>
-                        <textarea class="form-control" rows="4" asp-for="WriterAbout"></textarea>
-                        @Html.ValidationMessageFor(x=>x.WriterAbout)
-                    </div>
+                    @*<div class="form-group">
+                    <label>Yazar Hakkında</label>
+                    <textarea class="form-control" rows="4" asp-for="WriterAbout"></textarea>
+                    @Html.ValidationMessageFor(x=>x.WriterAbout)
+                    </div>*@
 
                     <button type="submit" class="btn btn-gradient-primary mr-2">Güncelle!</button>
                 </form>

@@ -1840,4 +1840,55 @@ var writerID = context.Writers.Where(x => x.WriterMail == usermail).Select(y => 
 
 önemli kısımlar.
 
+Home/Index yapıldı. Giriş yapan kullanıcı için ayrı yapmayan için ayrı bir topbar yapıldı.
+
 # 127 Ders (Ajax ile Mail Bülteni Subscribe (Partial View Ajax With Post)
+-> BlogController, NewsLetterController ve SubscribeMail da revizeler yapıldı.
+
+# 128 Ders (Yazar Panelinde Revizeler)
+Blog/Index, DashboardControlle ve WriterController revizeler yapıldı.
+
+# 129 Ders (Yazar Bilgilerinin Identitye Bağlanması)
+Bu derste EditWriter için Dal ve business layer'da AppUser için gerekli interface ve classları ekledik. ardıdan get kısmını tamamlayıp dersi bitirdik.
+
+# 130 Ders (Identity FindByNameAsync ve UpdateAsync)
+Bu derste UserUpdateViewModel oluşturarak WriterController'da
+
+[HttpGet]
+        public async Task<IActionResult> WriterEditProfile()
+        {
+            var values = await _userManager.FindByNameAsync(User.Identity.Name);
+            UserUpdateViewModel user = new UserUpdateViewModel();
+            user.nameSurname = values.NameSurname;
+            user.userName = values.UserName;
+            user.imageUrl = values.ImageUrl;
+            user.mail = values.Email;
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> WriterEditProfile(UserUpdateViewModel user)
+        {
+            var values = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            if (user.image != null)
+            {
+                var resource = Directory.GetCurrentDirectory();
+                var extension = Path.GetExtension(user.image.FileName);
+                var imagename = Guid.NewGuid() + extension;
+                var savelocation = resource + "/wwwroot/userimages/" + imagename;
+                var stream = new FileStream(savelocation, FileMode.Create);
+                await user.image.CopyToAsync(stream);
+                values.ImageUrl = "/userimages/" + imagename;
+                ViewBag.IN = "/userimages/" + imagename;
+            }
+            values.NameSurname = user.nameSurname;
+            values.UserName = user.userName;
+            values.Email = user.mail;
+
+            var result = await _userManager.UpdateAsync(values);
+
+            return RedirectToAction("SignIn", "Login");
+        }
+
+işlemleri ile güncelleme işlemlerini tamamladık.
