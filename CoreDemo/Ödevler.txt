@@ -159,3 +159,11 @@ if (!signUpViewModel.IsAcceptTheContract)
 View kısmındada bu prop'a karşılık gelecek checkbox'a asp-for ile atama yaptım.
 <div class="checkbox i-checks"><label> <input type="checkbox" asp-for="IsAcceptTheContract"><i></i>
 Kullanım şartlarını okudum kabul ediyorum. Kabul ediyorum </label></div>
+
+132. Video 
+
+ var username = User.Identity.Name;
+ var usermail = context.Users.Where(x => x.UserName == username).Select(y => y.Email).FirstOrDefault();
+ var writerID = context.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterID).FirstOrDefault();
+
+tek satırda yazılabilir mi? User.FindFirstValue(ClaimTypes.NameIdentifier)

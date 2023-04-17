@@ -1,0 +1,12 @@
+﻿@model List<Writer>
+
+@foreach (var item in Model)
+{
+    <div class="nav-profile-img">
+        <img src="@item.WriterImage" />
+        <span class="availability-status online"></span>
+    </div>
+    <div class="nav-profile-text">
+        <p class="mb-1 text-black">@item.WriterName</p>
+    </div>
+}

@@ -1,19 +1,19 @@
 ﻿@model List<Message2>
 
 @{
-    ViewData["Title"] = "InBox";
+    ViewData["Title"] = "SendBox";
     Layout = "~/Views/Shared/_WriterLayout.cshtml";
 }
 
 <div class="card">
     <div class="card-body">
-        <h4 class="card-title">Gelen Mesaj Kutusu</h4>
+        <h4 class="card-title">Giden Mesaj Kutusu</h4>
         <table class="table table-hover table-responsive">
             <thead>
                 <tr>
                     <th> # </th>
                     <th> Profil Resmi </th>
-                    <th> Gönderen </th>
+                    <th> Alıcı </th>
                     <th> Konu </th>
                     <th> Gönderme Tarihi </th>
                     <th> Mesajı Aç </th>
@@ -25,9 +25,9 @@
                     <tr>
                         <td> @item.MessageID </td>
                         <td class="py-1">
-                            <img src="@item.SenderUser.WriterImage" alt="image" />
+                            <img src="@item.ReceiverUser.WriterImage" alt="image" />
                         </td>
-                        <td> @item.SenderUser.WriterName </td>
+                        <td> @item.ReceiverUser.WriterName </td>
                         <td> @item.Subject </td>
                         <td> @(((DateTime)item.MessageDate).ToString("dd-MMM-yyyy")) </td>
                         <td> <a href="/Message/MessageDetails/@item.MessageID" class="btn btn-outline-success mt-3">Mesajı Aç!</a> </td>
@@ -38,5 +38,4 @@
         <a href="/Message/SendMessage/" class="btn btn-outline-primary mt-3">Yeni Mesaj Oluştur!</a>
     </div>
 </div>
-
 

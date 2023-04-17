@@ -4,7 +4,7 @@
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Project Status</h4>
+                <h4 class="card-title">Kategoriler</h4>
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
@@ -12,19 +12,31 @@
                                 <th> # </th>
                                 <th> Kategori Adı </th>
                                 <th> Durum </th>
-                                <th> İşlemler </th>
+                                <th> Yazılma Oranı </th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
                             {
+                                Random rnd = new Random();
+                                int randomSayi = rnd.Next(0, 101); // 0 ile 100 arasında bir sayı üretir
+
                                 <tr>
                                     <td> @item.CategoryID </td>
                                     <td> @item.CategoryName </td>
-                                    <td> @item.CategoryStatus </td>
+                                    @if (item.CategoryStatus == true)
+                                    {
+                                        <td>Aktif</td>
+                                    }
+
+                                    else
+                                    {
+                                        <td>Pasif</td>
+                                    }
+
                                     <td>
                                         <div class="progress">
-                                            <div class="progress-bar bg-gradient-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar bg-gradient-success" role="progressbar" style="width: @randomSayi%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                     </td>
                                 </tr>

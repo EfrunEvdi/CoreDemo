@@ -1,0 +1,35 @@
+﻿@model Message2
+
+@{
+    ViewData["Title"] = "SendMessage";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Yeni Mesaj Gönderme Sayfası</h4>
+                <p></p>
+                <form method="post" class="forms-sample">
+                    <div class="form-group">
+                        <label>Alıcı</label>
+                        @Html.DropDownListFor(x=>x.ReceiverID,(List<SelectListItem>)ViewBag.AI,"Alıcı E-Postasını seçiniz.",new {@class="form-control"})
+                    </div>
+
+                    <div class="form-group">
+                        <label>Konu</label>
+                        <input type="text" asp-for="Subject" class="form-control" placeholder="Mesajın konusunu giriniz.">
+                    </div>
+
+                    <div class="form-group">
+                        <label>İçerik</label>
+                        <input type="text" asp-for="MessageDetails" class="form-control" placeholder="Mesaj içeriğini giriniz.">
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary mr-2">Mesajı Gönder!</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

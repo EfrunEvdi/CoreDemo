@@ -1,19 +1,10 @@
 ﻿using BusinessLayer.Concrete;
-using BusinessLayer.ValidationRules;
 using CoreDemo.Models;
-using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
-using DocumentFormat.OpenXml.Bibliography;
 using EntityLayer.Concrete;
-using FluentValidation.Results;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace CoreDemo.Controllers
@@ -38,7 +29,7 @@ namespace CoreDemo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignUp(UserSignUpViewModel p)
+        public async Task<IActionResult> SignUp(UserSignUpViewModel p, Writer writer)
         {
             if (ModelState.IsValid)
             {
@@ -55,11 +46,19 @@ namespace CoreDemo.Controllers
                 {
                     ModelState.AddModelError("IsAcceptTheContract",
                         "Sayfamıza kayıt olabilmek için gizlilik sözleşmesini kabul etmeniz gerekmektedir.");
+
+
                     return View(p);
                 }
 
                 if (result.Succeeded)
                 {
+                    WriterManager wm = new WriterManager(new EfWriterRepository());
+                    writer.WriterMail = p.Mail;
+                    writer.WriterName = p.NameSurname;
+                    writer.WriterPassword = p.Password;
+                    wm.TAdd(writer);
+
                     return RedirectToAction("SignIn", "Login");
                 }
 
@@ -100,46 +99,10 @@ namespace CoreDemo.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Logout()
-        //{
-        //    await _signInManager.SignOutAsync();
-        //    return RedirectToAction("SignIn", "Login");
-        //}
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("SignIn", "Login");
+        }
     }
 }
-
-//Context context = new Context();
-//var dataValue = context.Writers.FirstOrDefault(x => x.WriterMail == writer.WriterMail && x.WriterPassword == writer.WriterPassword);
-
-//if (dataValue != null)
-//{
-//    HttpContext.Session.SetString("username", writer.WriterMail);
-//    return RedirectToAction("Index", "Writer");
-//}
-
-//else
-//{
-//    return View();
-//}
-
-
-//Context context = new Context();
-//var datavalue = context.Writers.FirstOrDefault(x => x.WriterMail == writer.WriterMail && x.WriterPassword == writer.WriterPassword);
-//if (datavalue != null)
-//{
-//    var claims = new List<Claim>
-//    {
-//                    new Claim(ClaimTypes.Name,writer.WriterMail)
-//                };
-
-//    var useridentity = new ClaimsIdentity(claims, "a");
-//    ClaimsPrincipal principal = new ClaimsPrincipal(useridentity);
-//    await HttpContext.SignInAsync(principal);
-//    return RedirectToAction("Index", "Blog");
-//}
-
-//else
-//{
-//    return View();
-//}

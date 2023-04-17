@@ -9,5 +9,7 @@ namespace CoreDemo.Models
         public string imageUrl { get; set; }
         public IFormFile image { get; set; }
         public string mail { get; set; }
+        public string password { get; set; }
+        public string aboutWriter { get; set; }
     }
 }

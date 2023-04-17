@@ -1,17 +1,8 @@
 ﻿<nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
         <li class="nav-item nav-profile">
-            <a href="#" class="nav-link">
-                <div class="nav-profile-image">
-                    <img src="~/writer/assets/images/faces/face1.jpg" alt="profile">
-                    <span class="login-status online"></span>
-                    <!--change to offline or busy as needed-->
-                </div>
-                <div class="nav-profile-text d-flex flex-column">
-                    <span class="font-weight-bold mb-2">Efrun Evdi</span>
-                    <span class="text-secondary text-small">Yazılım Mühendisi</span>
-                </div>
-                <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
+            <a href="/Writer/WriterEditProfile" class="nav-link">
+                @await Component.InvokeAsync("WriterSidebar")
             </a>
         </li>
         <li class="nav-item">
@@ -45,10 +36,17 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/Writer/WriterMessage">
+            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-title">Mesajlar</span>
+                <i class="menu-arrow"></i>
                 <i class="mdi mdi-message-text-outline menu-icon"></i>
             </a>
+            <div class="collapse" id="ui-basic">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="/Message/InBox">Gelen Mesajlar</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="/Message/SendBox">Giden Mesajlar</a></li>
+                </ul>
+            </div>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/Writer/WriterEditProfile/">
@@ -62,7 +60,7 @@
                     <h6 class="font-weight-normal mb-3">Site İşlemleri</h6>
                 </div>
                 <a href="/Blog/Index/" target="_blank" class="btn btn-block btn-lg btn-gradient-primary mt-4">Siteye Git!</a>
-                <a href="/Login/WriterLogOut/" class="btn btn-block btn-lg btn-gradient-secondary mt-4">Çıkış Yap!</a>
+                <a href="/Login/Logout/" class="btn btn-block btn-lg btn-gradient-secondary mt-4">Çıkış Yap!</a>
             </span>
         </li>
     </ul>

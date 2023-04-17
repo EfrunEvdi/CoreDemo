@@ -1,0 +1,36 @@
+﻿@model List<Blog>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3">
+                <div class="ibox">
+                    <div class="ibox-content product-box">
+                        <div class="product-imitation text-center">
+                            <img src="@item.BlogImage" style="height:40%; width:80%">
+                        </div>
+                        <div class="product-desc">
+                            <span class="product-price">
+                                @(((DateTime)item.BlogCreateDate).ToString("dd-MMM-yyyy"))
+                            </span>
+                            <small class="text-muted">@item.Category.CategoryName</small>
+                            <a href="/Blog/BlogReadAll/@item.BlogID" class="product-name"> @item.BlogTitle</a>
+                            <div class="small m-t-xs">
+                                @item.BlogContent.Substring(0,item.BlogContent.Substring(0,130).LastIndexOf(" "))...
+                            </div>
+                            <div class="m-t text-righ">
+                                <a href="/Blog/BlogReadAll/@item.BlogID" class="btn btn-xs btn-outline btn-primary">Detaylar <i class="fa fa-long-arrow-right"></i> </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

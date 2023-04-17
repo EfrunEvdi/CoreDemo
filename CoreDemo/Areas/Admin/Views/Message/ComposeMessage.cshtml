@@ -1,0 +1,80 @@
+﻿@model EntityLayer.Concrete.Message2
+
+@{
+    ViewData["Title"] = "ComposeMessage";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="ibox ">
+                <div class="ibox-content mailbox-content">
+                    <div class="file-manager">
+                        <a class="btn btn-block btn-primary compose-mail" href="/Admin/Message/ComposeMessage">Yeni Mesaj Gönder</a>
+                        <div class="space-25"></div>
+                        <h5>Dosyalar</h5>
+                        <ul class="folder-list m-b-md" style="padding: 0">
+                            <li><a href="/Admin/Message/InBox"> <i class="fa fa-inbox "></i> Gelen Mesajlar </a></li>
+                            <li><a href="/Admin/Message/SendBox"> <i class="fa fa-envelope-o"></i> Giden Mesajlar </a></li>
+                            <li><a href="#"> <i class="fa fa-certificate"></i> Önemli Mesajlar</a></li>
+                            <li><a href="#"> <i class="fa fa-file-text-o"></i> Taslaklar </a></li>
+                            <li><a href="#"> <i class="fa fa-trash-o"></i> Çöp Kutusu</a></li>
+                        </ul>
+                        <h5>Kategoriler</h5>
+                        <ul class="category-list" style="padding: 0">
+                            <li><a href="#"> <i class="fa fa-circle text-navy"></i> İş </a></li>
+                            <li><a href="#"> <i class="fa fa-circle text-danger"></i> Dökümanlar</a></li>
+                            <li><a href="#"> <i class="fa fa-circle text-primary"></i> Sosyal</a></li>
+                            <li><a href="#"> <i class="fa fa-circle text-info"></i> Tanıtımlar</a></li>
+                            <li><a href="#"> <i class="fa fa-circle text-warning"></i> Talepler</a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-9 animated fadeInRight">
+            <div class="mail-box-header">
+                <div class="float-right tooltip-demo">
+                    <a href="#" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to draft folder"><i class="fa fa-pencil"></i> Taslak</a>
+                    <a href="#" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Discard email"><i class="fa fa-times"></i> İptal Et!</a>
+                </div>
+                <h2>
+                    Yeni Mesaj Oluştur
+                </h2>
+            </div>
+
+            <div class="mail-box">
+                <div class="mail-body">
+                    <form method="post">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Alıcı :</label>
+
+                            <div class="col-sm-10"> @Html.DropDownListFor(x=>x.ReceiverID,(List<SelectListItem>)ViewBag.AI,"Alıcı E-Postasını seçiniz.",new {@class="form-control"})</div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Konu :</label>
+
+                            <div class="col-sm-10"><input type="text" class="form-control" asp-for="Subject" placeholder="Mesajınızın konusunu yazınız."></div>
+                        </div>
+
+                        <div class="mail-text h-200 mt-3">
+                            <textarea class="form-control" asp-for="MessageDetails" rows="10" cols="20" placeholder="Mesajınızın içeriğini yazınız."></textarea>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="mail-body text-right tooltip-demo">
+                            <button class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Gönder"><i class="fa fa-reply"></i> Gönder</button>
+                            <a href="#" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Göndermekten Vazgeç"><i class="fa fa-times"></i> Vazgeç</a>
+                            <a href="#" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Taslağa Taşı"><i class="fa fa-pencil"></i> Taslak</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+

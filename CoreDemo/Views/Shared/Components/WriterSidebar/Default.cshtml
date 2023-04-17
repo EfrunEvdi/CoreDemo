@@ -1,0 +1,16 @@
+﻿@model List<Writer>
+
+@foreach (var item in Model)
+{
+    <div class="nav-profile-image">
+        <img src="@item.WriterImage" alt="profile">
+        <span class="login-status online"></span>
+        <!--change to offline or busy as needed-->
+    </div>
+    <div class="nav-profile-text d-flex flex-column">
+        <span class="font-weight-bold mb-2">@item.WriterName</span>
+        <span class="text-secondary text-small">@item.WriterMail</span>
+    </div>
+    <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
+}
+
