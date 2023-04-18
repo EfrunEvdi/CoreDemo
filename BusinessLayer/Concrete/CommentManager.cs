@@ -47,5 +47,10 @@ namespace BusinessLayer.Concrete
         {
             _commentDal.Update(t);
         }
+
+        public List<Comment> GetCommentWithBlog()
+        {
+            return _commentDal.GetListWithBlog();
+        }
     }
 }

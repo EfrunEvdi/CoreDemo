@@ -1,0 +1,46 @@
+﻿@model RoleUpdateViewModel
+
+@{
+    ViewData["Title"] = "UpdateRole";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading mt-3">
+    <div class="col-lg-10">
+        <h2>Role Güncelleme Sayfası</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/Admin/Widget/Index">Ana Sayfa</a>
+            </li>
+            <li class="breadcrumb-item">
+                Rol İşlemleri
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>Role Güncelleme Sayfası</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="col-lg-12">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>Role Güncelleme Sayfası</h5>
+            </div>
+            <div class="ibox-content">
+                <form method="post">
+                    <input type="hidden" asp-for="ID" />
+                    <div class="form-group row">
+                        <label class="col-lg-2 col-form-label">Rol Adı :</label>
+                        <div class="col-lg-10">
+                            <input asp-for="Name" type="text" placeholder="Rol adını giriniz." class="form-control">
+                        </div>
+                        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                    </div>
+                    <button class="btn btn-outline-secondary col-12">Rolü Güncelle!</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

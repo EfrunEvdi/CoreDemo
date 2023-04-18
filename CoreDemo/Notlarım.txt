@@ -1927,3 +1927,93 @@ Bu derste admin panelinde admin templatesine uygun Gelem,Giden ve yeni mesaj gö
 
 # 137 Ders (Admin Blog Listesi)
 Bu derste mesaj gönderme işlemi tamamlandı. Ardından Bloglar listelendi.
+
+# 138 Ders (Admin Yorum Listesi)
+Admin areasında yorumlar listelendi.
+
+# 139 Ders (Rol Listesi ve Rol Ekleme)
+Bu derste Rol adlarının listelenmesi ve RoleViewModel kullanılarak yeni rol eklenmesi işlemleri yapıldı.
+
+# 140 Ders (Rol Düzenleme ve Rol Silme)
+RoleUpdateViewModel yardımıyla Rol güncelleme, devamında rol silme işlemi ile dersi tamamladık.
+
+# 141 Ders (Kullanıcılar ve Roller)
+Bu derste kullanıcılar listelettirip RoleAssignViewModel yardımıyla rol atama işlemini yarıda bırakarak dersi bitirdik.
+
+# 142 Ders (Kullanıcıya Ait Rollerin Listelenmesi) (Önemli)
+Bu derste kullanıcıya ait rolleri listelettirdik. Çok önemli başka projelerden kullanılabilecek bir video.
+
+# 143 Ders (Rol Atama ve Rol Kaldırma İşlemleri)
+Bu derste önceki derste yarım bıraktığımız rol atama işlemini bitirdik.
+
+# 144 Ders (Rol Bazlı Yetkilendirme)
+Bu derste istediğimiz yerleri role'e göre açtık.
+
+# 145 Ders (Access Denied Sayfası)
+Bu derste admin olmayanların Admin paneline girerken verdiği hata için sayfa yazdık. En önemli kısım startupta
+
+options.AccessDeniedPath = new PathString("/ErrorPage/AccessDenied");
+
+kodudur.
+
+# 146 Ders (JsonWebToken ve Konfigürasyonu) (Tekrar edilecek.)
+Bu derste ilk olarak projemize yeni bir Api katmanı ekleyip http kısmını kaldırıyoruz. Devamında açtığımız "jwt_core_proje_kampi" adlı katmana 
+
+-> Microsoft.AspNetCore.Authentication.JwtBear (5.0.13)
+
+paketini yüklüyoruz. Devamında Configure işlemi için
+
+services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = "http://localhost",
+                    ValidAudience = "http://localhost",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("aspnetcoreprojekampi")),
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
+kodlarını startup'a yazarak dersi sonlandırıyoruz.
+
+# 147 Ders (Token Oluşturma ve Test Etme)
+Bu derste 
+startup -> app.UseAuthentication(); 
+
+DAL/BuildToken ->   public string CretateToken()
+        {
+            var bytes = Encoding.UTF8.GetBytes("aspnetcoreprojekampi");
+            SymmetricSecurityKey key = new SymmetricSecurityKey(bytes);
+            SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            JwtSecurityToken token = new JwtSecurityToken(issuer: "http://localhost", audience: "http://localhost", notBefore: DateTime.Now, expires: DateTime.Now.AddMinutes(1), signingCredentials: credentials);
+
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+
+            return handler.WriteToken(token);
+        }
+
+Controller/Default ->  
+    [Route("api/[controller]")]
+    [ApiController]
+    public class DefaultController : ControllerBase
+    {
+        [HttpGet("[action]")]
+        public IActionResult Login()
+        {
+            return Created("", new BuildToken().CretateToken());
+        }
+
+        [Authorize]
+        [HttpGet("[action]")]
+        public IActionResult Page1()
+        {
+            return Ok("Sayfa 1 için girişiniz başarılı.");
+        }
+    }
+
+kodları ile jwt'yi startup project seçerek çalıştırıp http://localhost:13139/api/Default/Login urlsini Postman'a yapıştırdık ve token üretildi. 
+
+Daha sonra PostaManda yeni bir pencere açıp urlsini http://localhost:13139/api/Default/Page1 olarak verip Headers seçip Key : Authorization Value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE2ODE4MzUwOTYsImV4cCI6MTY4MTgzNTE1NiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QifQ.732NkR1-Zz0RL0nOG6O6dvnMuL-7MnHH-X6jYE3bWJ8 bu uzun kısım bir önceki sayfadan gelen token. Send dediğimizde controller'a yazdığımız mesajı yazdı.

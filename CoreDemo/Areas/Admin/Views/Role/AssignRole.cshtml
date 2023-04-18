@@ -1,0 +1,51 @@
+﻿@model List<RoleAssignViewModel>
+
+@{
+    ViewData["Title"] = "AssignRole";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading mt-3">
+    <div class="col-lg-10">
+        <h2>Kullanıcı Rol Atama Sayfası</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/Admin/Widget/Index">Ana Sayfa</a>
+            </li>
+            <li class="breadcrumb-item">
+                Rol İşlemleri
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>Kullanıcı Rol Atama Sayfası</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="col-lg-12">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>Rol Atama Sayfası</h5>
+            </div>
+            <div class="ibox-content">
+                <form method="post">
+                    @for (int i = 0; i < Model.Count(); i++)
+                    {
+                        <div class="form-check">
+                            <input type="hidden" asp-for="@Model[i].RoleID" />
+                            <input type="hidden" asp-for="@Model[i].Name" />
+
+                            <div class="i-checks"><label> <input type="checkbox" class="form-check-input" asp-for="@Model[i].Exists"> @Model[i].Name</label></div>
+                            @*<label class="i-checks" for="@Model[i].Exists"> </label>*@
+                        </div>
+                    }
+                    <div class="row mt-4">
+                        <button class="btn btn-primary col-6">Rol/Rolleri Ata!</button>
+                        <a href="/Admin/Role/UserRoleList/" class="btn btn-info col-6">Kullanıcı Listesine Geri Dön!</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

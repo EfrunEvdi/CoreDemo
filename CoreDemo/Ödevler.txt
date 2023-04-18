@@ -167,3 +167,5 @@ Kullanım şartlarını okudum kabul ediyorum. Kabul ediyorum </label></div>
  var writerID = context.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterID).FirstOrDefault();
 
 tek satırda yazılabilir mi? User.FindFirstValue(ClaimTypes.NameIdentifier)
+
+144. Video Role göre sidebar'da bazı yerleri göstermemek.

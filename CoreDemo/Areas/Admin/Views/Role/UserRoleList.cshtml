@@ -1,0 +1,53 @@
+﻿@model List<AppUser>
+
+@{
+    ViewData["Title"] = "UserRoleList";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading mt-3">
+    <div class="col-lg-10">
+        <h2>Kullanıcı Rol Listesi</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/Admin/Widget/Index">Ana Sayfa</a>
+            </li>
+            <li class="breadcrumb-item">
+                Rol İşlemleri
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>Kullanıcı Rol Listesi</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-4">
+                <div class="contact-box">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="text-center">
+                                <img alt="image" class="rounded-circle m-t-xs img-fluid" src="@item.ImageUrl">
+                                <div class="m-t-xs font-bold">@item.UserName</div>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <h3><strong>@item.NameSurname</strong></h3>
+                            <p><i class="fa fa-map-marker"></i> @item.Email</p>
+                            <address>
+                                <strong>Rol İşlemleri</strong><br>
+                                <br>
+                                <a href="/Admin/Role/AssignRole/@item.Id" class="btn btn-primary col-8">Rol Ata</a>
+                                <abbr title="Phone"></abbr>
+                            </address>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -8,10 +8,12 @@ using System.Reflection.Metadata;
 using System;
 using X.PagedList;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CoreDemo.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin,Moderator")]
     [Route("Admin/[Controller]/[Action]/{id?}")]
     public class CategoryController : Controller
     {

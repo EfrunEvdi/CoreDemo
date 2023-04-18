@@ -1,0 +1,79 @@
+﻿@model List<AppRole>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading mt-3">
+    <div class="col-lg-10">
+        <h2>Rol Listesi</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/Admin/Widget/Index">Ana Sayfa</a>
+            </li>
+            <li class="breadcrumb-item">
+                Rol İşlemleri
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>Rol Listesi</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>Rol Listesi </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Başlık </th>
+                                    <th>Yetkinlik </th>
+                                    <th>Düzenle</th>
+                                    <th>Sil</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.Id</td>
+                                        <td><strong>@item.Name</strong></td>
+                                        @if (item.Name == "Admin")
+                                        {
+                                            <td><span class="pie">100/100</span></td>
+                                        }
+                                        else if (item.Name == "Writer")
+                                        {
+                                            <td><span class="pie">50/100</span></td>
+                                        }
+                                        else if (item.Name == "Moderator")
+                                        {
+                                            <td><span class="pie">75/100</span></td>
+                                        }
+                                        else
+                                        {
+                                            <td><span class="pie">25/100</span></td>
+                                        }
+
+                                        <td><a href="/Admin/Role/UpdateRole/@item.Id" class="btn btn-primary"><i class="fa fa-wrench"></i></a></td>
+                                        <td><a href="/Admin/Role/DeleteRole/@item.Id" class="btn btn-danger" onclick="return confirm('Silmek istediğinize emin misiniz?')"><i class="fa fa-times"></i></a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <a href="/Admin/Role/AddRole" class="btn btn-outline-secondary col-12">Yeni Rol Ekle!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

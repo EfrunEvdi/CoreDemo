@@ -7,13 +7,13 @@ namespace CoreDemo.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Admin,Moderator")]
-    public class BlogsController : Controller
+    public class CommentController : Controller
     {
-        BlogManager bm = new BlogManager(new EfBlogRepository());
+        CommentManager cm = new CommentManager(new EfCommentRepository());
 
         public IActionResult Index()
         {
-            var values = bm.GetBlogListWithCategory();
+            var values = cm.GetCommentWithBlog();
             return View(values);
         }
     }
