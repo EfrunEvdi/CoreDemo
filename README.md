@@ -27,18 +27,36 @@ Proje Kullanıcı, Yazar ve Admin Panelli bir Blog sitesidir.
 
 ## Proje Görselleri
 
-![Admin Paneli](https://user-images.githubusercontent.com/70768778/165183222-8defe2ff-6dfc-4db0-b6bf-2b48f76bf129.png)
-
-![Blog](https://user-images.githubusercontent.com/70768778/165183297-907b1a41-e3cc-4f03-b873-4403a76583e6.png)
-
-![Blog](https://user-images.githubusercontent.com/70768778/165183304-8e8fd59b-9f20-4eb5-a75f-5769dc6ba214.png)
-
-![Blog](https://user-images.githubusercontent.com/70768778/165183319-024f1607-225f-4986-a7a9-eec2e6680072.png)
-
-![Blog)](https://user-images.githubusercontent.com/70768778/165183325-0aa011dc-1450-4acb-a92b-7fe3b5e4e440.png)
-
-![Blog](https://user-images.githubusercontent.com/70768778/165183333-0eca39bb-f21f-4ec2-9427-26090d36e27d.png)
-
-![Blog](https://user-images.githubusercontent.com/70768778/165183334-1ff0469b-3644-4462-a58c-137ee9ec0025.png)
-
-![Blog](https://user-images.githubusercontent.com/70768778/165183335-392c7fdd-ecc0-440c-998b-3c5bde755174.png)
+![Blog](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/1.jpg)
+![Blog](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/2.jpg)
+![Blog](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/3.jpg)
+![Blog](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/4.jpg)
+![Blog](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/5.jpg)
+![Blog](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/6.jpg)
+![Blog](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/7.jpg)
+![Blog](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/8.jpg)
+![Blog](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/9.jpg)
+![Blog](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/10.jpg)
+![Blog](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/11.jpg)
+![Blog](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/12.jpg)
+![Writer](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/13.jpg)
+![Writer](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/14.jpg)
+![Writer](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/15.jpg)
+![Writer](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/16.jpg)
+![Writer](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/17.jpg)
+![Writer](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/18.jpg)
+![Writer](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/19.jpg)
+![Writer](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/20.jpg)
+![Writer](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/21.jpg)
+![Admin](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/22.jpg)
+![Admin](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/23.jpg)
+![Admin](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/24.jpg)
+![Admin](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/25.jpg)
+![Admin](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/26.jpg)
+![Admin](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/27.jpg)
+![Admin](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/28.jpg)
+![Admin](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/29.jpg)
+![Admin](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/30.jpg)
+![Admin](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/31.jpg)
+![404](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/32.jpg)
+![403](https://github.com/EfrunEvdi/CoreDemo/blob/master/Proje/33.jpg)
