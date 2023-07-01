@@ -1,6 +1,7 @@
 # CoreDemo
 Asp.Net Core 5.0 Proje Kampı 
-### Kamp Youtube Kanalı: https://www.youtube.com/playlist?list=PLKnjBHu2xXNNkinaVhPqPZG0ubaLN63ci
+
+[![Kamp Youtube Kanalı](https://img.shields.io/badge/Kamp%20Youtube%20Kanalı-izlemek%20için%20tıklayın-red)](https://www.youtube.com/playlist?list=PLKnjBHu2xXNNkinaVhPqPZG0ubaLN63ci)
 
 ## Proje Hakkında: 
 ASP.Net Core 5.0 ile Entity Framework Core, N Tier Architechture mimarisini API'lerle destekleyerek Codefirst yaklaşımı ile veritabanı olarak SQL Server kullanılarak kodlanmıştır.
